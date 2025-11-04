@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Рейтинг фільмів</title>
+  <!-- Підключаємо Bootstrap CSS через CDN -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <!-- Підключаємо style.css -->
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body>
+  <div class="container-fluid">
+    <div class="row">
+      <nav role="navigation" class="navbar navbar-inverse">
+        <div class="container">
+          <div class="navbar-header header">
+            <div class="container">
+              <div class="row">
+                <div class="col-lg-12">
+                  <h1><a href="index.html">КіноМонстр</a></h1>
+                  <p>Кіно - наша страсть!</p>
+                </div>
+              </div>
+            </div>
+            <button type="button" data-target="#navbarCollapse" data-toggle="collapse" class="navbar-toggle">
+              <span class="sr-only">Переключення навігації</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <div id="navbarCollapse" class="collapse navbar-collapse navbar-right">
+            <ul class="nav nav-pills">
+              <li> <a href="index.html">Головна</a> </li>
+              <li> <a href="films.html">Фільми</a> </li> 
+              <li class="active"> <a href="raiting.html">Рейтинг фільмів</a> </li>
+              <li> <a href="contact.html">Контакти</a> </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </div>
+  <div class="wrapper">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-9 col-sm-push-3">
+
+          <h1>Рейтинг фільмів</h1>
+          <hr>
+
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Фільм</th>
+                <th class="text-center">Рік</th>
+                <th class="text-center">Рейтинг</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="col-lg-1 col-md-1 col-xs-2"><img class="img-responsive img-thumbnail"
+                    src="assets/img/inter.png" alt="Інтерстеллар"></td>
+                <td class="vert-align"><a href="show.html">Інтерстеллар</a></td>
+                <td class="text-center vert-align">2014</td>
+                <td class="text-center vert-align"><span class="badge">8.9</span></td>
+              </tr>
+
+              <tr>
+                <td class="col-lg-1 col-md-1 col-xs-2"><img class="img-responsive img-thumbnail"
+                    src="assets/img/cloud.png" alt="Інтерстеллар"></td>
+                <td class="vert-align"><a href="#">Хмарний атлас</a></td>
+                <td class="text-center vert-align">2012</td>
+                <td class="text-center vert-align"><span class="badge">8.1</span></td>
+              </tr>
+
+              <tr>
+                <td class="col-lg-1 col-md-1 col-xs-2"><img class="img-responsive img-thumbnail"
+                    src="assets/img/matrix.png" alt="Інтерстеллар"></td>
+                <td class="vert-align"><a href="#">Матриця</a></td>
+                <td class="text-center vert-align">1999</td>
+                <td class="text-center vert-align"><span class="badge">8.3</span></td>
+              </tr>
+
+              <tr>
+                <td class="col-lg-1 col-md-1 col-xs-2"><img class="img-responsive img-thumbnail"
+                    src="assets/img/max.png" alt="Інтерстеллар"></td>
+                <td class="vert-align"><a href="#">Безумний Макс</a></td>
+                <td class="text-center vert-align">2015</td>
+                <td class="text-center vert-align"><span class="badge">8.7</span></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="margin-8"></div>
+
+        </div>
+        <div class="col-sm-3 col-sm-pull-9">
+
+          <div class="panel panel-info hidden-xs">
+            <div class="panel-heading">
+              <div class="sidebar-header">Пошук</div>
+            </div>
+            <div class="panel-body">
+              <form role="search">
+                <div class="form-group">
+                  <div class="input-group">
+                    <input type="search" class="form-control input-lg" placeholder="Ваш запит">
+                    <div class="input-group-btn">
+                      <button class="btn btn-default btn-lg" type="submit"><i
+                          class="glyphicon glyphicon-search"></i></button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+
+
+          <div class="panel panel-info">
+            <div class="panel-heading">
+              <div class="sidebar-header">Вхід</div>
+            </div>
+            <div class="panel-body">
+
+              <form role="form">
+                <div class="form-group">
+                  <input type="text" class="form-control input-lg" placeholder="Логін">
+                </div>
+                <div class="form-group">
+                  <input type="password" class="form-control input-lg" placeholder="Пароль">
+                </div>
+
+                <button type="submit" class="btn btn-warning pull-right">вхід</button>
+              </form>
+
+            </div>
+          </div>
+
+
+          <div class="panel panel-info">
+            <div class="panel-heading">
+              <div class="sidebar-header">Рейтинг фільмів</div>
+            </div>
+            <div class="panel-body">
+
+              <ul class="list-group">
+                <li class="list-group-item list-group-warning">
+                  <span class="badge">8.9</span>
+                  <a href="show.html">Інтерстеллар</a>
+                </li>
+
+                <li class="list-group-item list-group-warning">
+                  <span class="badge">8.7</span>
+                  <a href="#">Безумний Макс</a>
+                </li>
+
+                <li class="list-group-item list-group-warning">
+                  <span class="badge">8.3</span>
+                  <a href="#">Матриця</a>
+                </li>
+
+                <li class="list-group-item list-group-warning">
+                  <span class="badge">8.1</span>
+                  <a href="#">Хмарний атлас</a>
+                </li>
+
+                <li class="list-group-item list-group-warning">
+                  <span class="badge">8.9</span>
+                  <a href="show.html">Інтерстеллар</a>
+                </li>
+
+                <li class="list-group-item list-group-warning">
+                  <span class="badge">8.7</span>
+                  <a href="#">Безумний Макс</a>
+                </li>
+
+                <li class="list-group-item list-group-warning">
+                  <span class="badge">8.3</span>
+                  <a href="#">Матриця</a>
+                </li>
+
+                <li class="list-group-item list-group-warning">
+                  <span class="badge">8.1</span>
+                  <a href="#">Хмарний атлас</a>
+                </li>
+              </ul>
+
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+    <div class="clear"></div>
+  </div>
+  <footer>
+    <div class="container">
+      <p class="text-center"> <a>AnnaBocharova</a> </p>
+    </div>
+  </footer>
+  <!-- Підключаємо jQuery та Bootstrap JS через CDN -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</body>
+
+</html>
