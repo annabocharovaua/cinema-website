@@ -44,3 +44,5 @@ fetch('/getPosterNewFilmsFromDB', {
           counter++;
      }
     });
+
+    

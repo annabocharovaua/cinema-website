@@ -9,7 +9,6 @@ var bodyParser = require('body-parser');
 var jsonParser = bodyParser.json();
 app.use(jsonParser);
 
-
 // создание хранилища для сессий 
 var sessionHandler = require('./session_handler');
 var store = sessionHandler.createStore();
@@ -97,11 +96,10 @@ app.get('/getFilmsFromDB', (request, response) => {
     GROUP BY fg.film_id;`;
 
     connection.query(query_genre, (err, result, field) => {
-        //console.log(err);
         result.forEach(function (item, i, arr) {
             film_genres[item['film_id']] = item['genre_names'];
         });
-        //console.log(result);
+        
     });
 
     let query = "SELECT * FROM films";
@@ -114,7 +112,6 @@ app.get('/getFilmsFromDB', (request, response) => {
             "description": item['description'], "poster": item['poster'], "trailer": item['trailer'], "rating": item['rating']
             , "count_ratings": item['count_ratings'], "film_genres": film_genres[item['film_id']]};
         });
-        console.log(queryResult);
         response.send(queryResult);
     });
 
@@ -133,10 +130,66 @@ app.get('/getPosterNewFilmsFromDB', (request, response) => {
         result.forEach(function (item, i, arr) {
             queryResult[i] = { "film_id": item['film_id'], "name": item['name'], "poster": item['poster']};
         });
-        console.log(queryResult);
-        response.send(queryResult);
+       response.send(queryResult);
     });
 
     CloseConnectionToDB(connection);
 });
+
+app.get('/getFilmDetails/:filmId', (request, response) => {
+    const filmId = request.params.filmId;
+    console.log(filmId); 
+
+    const connection = ConnectToDB(config);    
+
+    let film_genres = "";
+    let query_genre = `SELECT fg.film_id, REPLACE(GROUP_CONCAT(g.name SEPARATOR ', '), ',', ', ') AS genre_names 
+    FROM film_genres fg 
+    JOIN genres g ON fg.genre_id = g.genre_id
+    WHERE fg.film_id = ${filmId}
+    GROUP BY fg.film_id;`;
+
+    connection.query(query_genre, (err, result, field) => {
+        result.forEach(function (item, i, arr) {
+            film_genres = item['genre_names'];
+        });
+        
+    });
+
+
+    let film_reviews = [];
+    let query_reviews = `SELECT fr.review_id, fr.id_film, fr.id_user, fr.rating, fr.review_date, fr.review_text, u.first_name, u.last_name
+    FROM film_reviews fr
+    JOIN users1 u ON fr.id_user = u.user_id
+    WHERE fr.id_film = ${filmId} AND fr.review_text IS NOT NULL;`
+
+    connection.query(query_reviews, (err, result, field) => {
+        if (err) {
+            console.error(err);            
+        } else {
+            result.forEach(function (item, i, arr) {
+                film_reviews.push(item);
+            });
+        }
+        
+    });
+
+    let query = "SELECT * FROM films WHERE film_id = " + filmId + " ;";
+    let queryResult = {};
+
+    connection.query(query, (err, result, field) => {
+        queryResult = result;
+        result.forEach(function (item, i, arr) {
+            queryResult[i] = { "film_id": item['film_id'], "name": item['name'], "director": item['director'], "duration": item['duration'], 
+            "description": item['description'], "poster": item['poster'], "trailer": item['trailer'], "rating": item['rating']
+            , "count_ratings": item['count_ratings'], "film_genres": film_genres, "film_reviews": film_reviews};
+        });
+        console.log(queryResult);
+        response.send(queryResult);
+    });
+
+    CloseConnectionToDB(connection);    
+});
+
+
 

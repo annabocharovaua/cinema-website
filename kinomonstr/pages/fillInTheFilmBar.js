@@ -1,3 +1,6 @@
+myStorage = window.localStorage;
+
+
 function CreateElement(nameElement, idElement, innerText, parentId) {
     let element = document.createElement(nameElement);
     element.id = idElement;
@@ -8,6 +11,10 @@ function CreateElement(nameElement, idElement, innerText, parentId) {
          document.getElementById(parentId).appendChild(element);
     return element;
 }
+
+function showFilmDetails(filmId) {
+     localStorage.setItem("FILM_ID", filmId);
+ }
 
 fetch('/getFilmsFromDB', {
     method: 'GET',
@@ -42,15 +49,10 @@ fetch('/getFilmsFromDB', {
             CreateElement("p", "descriptionTextFilm-" + filmId, filmsTable[i]['description'], "descriptionFilm-" + filmId);
             CreateElement("div", "detailsFilm-" + filmId, "", "wellFilm-" + filmId).classList.add("col-lg-12");
             CreateElement("a", "hrefFilm-" + filmId, "Детальніше", "detailsFilm-" + filmId).classList.add("btn", "btn-lg","btn-warning", "pull-right");
-            document.getElementById("hrefFilm-" + filmId).setAttribute('href', "show.html");
-           
-            console.log("film_id: ", filmsTable[i]['film_id']);
-            console.log("name: ", filmsTable[i]['name']);
-            console.log("director: ", filmsTable[i]['director']);
-            console.log("description: ", filmsTable[i]['description']);
-            console.log(filmsTable);
+
+            document.getElementById("hrefFilm-" + filmId).setAttribute("onclick", "showFilmDetails(" + filmId + ")");
+            document.getElementById("hrefFilm-" + filmId).setAttribute('href', "show.html");           
          }
     });
 
 
-  

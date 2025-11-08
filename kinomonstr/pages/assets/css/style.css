@@ -152,3 +152,11 @@ footer a {
 footer a:hover {
 	color: #efefef;
 }
+
+.custom-mt-3 {
+	margin-top: 15px; 
+}
+
+.custom-mb-2 {
+	margin-bottom: 10px;
+}
