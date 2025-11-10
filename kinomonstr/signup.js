@@ -5,16 +5,26 @@ var pass_handler = require('./password_handler');
 
 module.exports = {
 	addUser: function(req, res) { 
+
 		var inserts = {
-			username:  req.body.username, 
-			password_hash: pass_handler.encrypt_pass(req.body.password) 
-		}; 
+			firstName: req.body.firstName, 
+			lastName: req.body.lastName, 
+			email: req.body.email, 
+			phone: req.body.phone, 
+			username: req.body.username, 
+			password_hash: pass_handler.encrypt_pass(req.body.password)
+		  }
+
 		console.log(inserts.username);
-		let query = "INSERT INTO `users` (`username`, `password`) VALUES ('" + inserts.username + "', '" + inserts.password_hash + "')";
+		let query = "INSERT INTO `users1` (`first_name`, `last_name`, `phone`, `email`, `username`, `password`) VALUES ('" + inserts.firstName + "', '" + inserts.lastName + "', '" 
+																														   + inserts.phone + "', '" + inserts.email + "', '" 
+																														   + inserts.username + "', '" + inserts.password_hash + "')";
 		connection.query(query, (err, result, field) => {
 			if (!err) res.status(200).send('user created successfully!'); 
+			else if (err.code == 'ER_DUP_ENTRY')
+				res.status(409).send('User with the same username already exists!');
 			 console.log(err);
-			 //response.send(result);
+			 //res.send(result);
 		});
 		//CloseConnectionToDB(connection);
 

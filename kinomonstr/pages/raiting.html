@@ -56,42 +56,12 @@
               <tr>
                 <th></th>
                 <th>Фільм</th>
-                <th class="text-center">Рік</th>
+                <th class="text-center">Жанр</th>
                 <th class="text-center">Рейтинг</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td class="col-lg-1 col-md-1 col-xs-2"><img class="img-responsive img-thumbnail"
-                    src="assets/img/inter.png" alt="Інтерстеллар"></td>
-                <td class="vert-align"><a href="show.html">Інтерстеллар</a></td>
-                <td class="text-center vert-align">2014</td>
-                <td class="text-center vert-align"><span class="badge">8.9</span></td>
-              </tr>
-
-              <tr>
-                <td class="col-lg-1 col-md-1 col-xs-2"><img class="img-responsive img-thumbnail"
-                    src="assets/img/cloud.png" alt="Інтерстеллар"></td>
-                <td class="vert-align"><a href="#">Хмарний атлас</a></td>
-                <td class="text-center vert-align">2012</td>
-                <td class="text-center vert-align"><span class="badge">8.1</span></td>
-              </tr>
-
-              <tr>
-                <td class="col-lg-1 col-md-1 col-xs-2"><img class="img-responsive img-thumbnail"
-                    src="assets/img/matrix.png" alt="Інтерстеллар"></td>
-                <td class="vert-align"><a href="#">Матриця</a></td>
-                <td class="text-center vert-align">1999</td>
-                <td class="text-center vert-align"><span class="badge">8.3</span></td>
-              </tr>
-
-              <tr>
-                <td class="col-lg-1 col-md-1 col-xs-2"><img class="img-responsive img-thumbnail"
-                    src="assets/img/max.png" alt="Інтерстеллар"></td>
-                <td class="vert-align"><a href="#">Безумний Макс</a></td>
-                <td class="text-center vert-align">2015</td>
-                <td class="text-center vert-align"><span class="badge">8.7</span></td>
-              </tr>
+            <tbody id="raitingTable">
+              <script src="fillRaitingPages.js"></script>
             </tbody>
           </table>
 
@@ -118,80 +88,16 @@
               </form>
             </div>
           </div>
-
-
-          <div class="panel panel-info">
-            <div class="panel-heading">
-              <div class="sidebar-header">Вхід</div>
-            </div>
-            <div class="panel-body">
-
-              <form role="form">
-                <div class="form-group">
-                  <input type="text" class="form-control input-lg" placeholder="Логін">
-                </div>
-                <div class="form-group">
-                  <input type="password" class="form-control input-lg" placeholder="Пароль">
-                </div>
-
-                <button type="submit" class="btn btn-warning pull-right">вхід</button>
-              </form>
-
-            </div>
-          </div>
-
-
+          
           <div class="panel panel-info">
             <div class="panel-heading">
               <div class="sidebar-header">Рейтинг фільмів</div>
             </div>
             <div class="panel-body">
-
-              <ul class="list-group">
-                <li class="list-group-item list-group-warning">
-                  <span class="badge">8.9</span>
-                  <a href="show.html">Інтерстеллар</a>
-                </li>
-
-                <li class="list-group-item list-group-warning">
-                  <span class="badge">8.7</span>
-                  <a href="#">Безумний Макс</a>
-                </li>
-
-                <li class="list-group-item list-group-warning">
-                  <span class="badge">8.3</span>
-                  <a href="#">Матриця</a>
-                </li>
-
-                <li class="list-group-item list-group-warning">
-                  <span class="badge">8.1</span>
-                  <a href="#">Хмарний атлас</a>
-                </li>
-
-                <li class="list-group-item list-group-warning">
-                  <span class="badge">8.9</span>
-                  <a href="show.html">Інтерстеллар</a>
-                </li>
-
-                <li class="list-group-item list-group-warning">
-                  <span class="badge">8.7</span>
-                  <a href="#">Безумний Макс</a>
-                </li>
-
-                <li class="list-group-item list-group-warning">
-                  <span class="badge">8.3</span>
-                  <a href="#">Матриця</a>
-                </li>
-
-                <li class="list-group-item list-group-warning">
-                  <span class="badge">8.1</span>
-                  <a href="#">Хмарний атлас</a>
-                </li>
-              </ul>
-
+              <ul class="list-group" id = "panelListRatings"></ul>
             </div>
+           <script src="ratingFillBar.js"></script>
           </div>
-
 
         </div>
       </div>

@@ -1,4 +1,5 @@
 const path = require('path');
+const cache = require('memory-cache');
 const express = require('express');
 const app = express();
 
@@ -36,8 +37,9 @@ app.post('/signup', signup.addUser);
 
 // ограничение доступа к контенту на основе авторизации 
 app.get('/check', function (req, res) {
-    if (req.session.username) {
-        res.send('hello, user ' + req.session.username);
+    var username = cache.get("username")
+    if (username) {
+        res.send('hello, user ' + username);
    } else {
         res.send('Not logged in(');
     }
@@ -191,5 +193,58 @@ app.get('/getFilmDetails/:filmId', (request, response) => {
     CloseConnectionToDB(connection);    
 });
 
+app.get('/getRatingFilmsFromDB', (request, response) => {
+    const filmId = request.params.filmId;
+    console.log(filmId); 
+
+    const connection = ConnectToDB(config);    
+
+    let query = "SELECT film_id, name, rating FROM films;";
+    let queryResult = {};
+
+    connection.query(query, (err, result, field) => {
+        queryResult = result;
+        result.forEach(function (item, i, arr) {
+            queryResult[i] = { "film_id": item['film_id'], "name": item['name'], "rating": item['rating']};
+        });
+        console.log(queryResult);
+        response.send(queryResult);
+    });
+
+    CloseConnectionToDB(connection);    
+});
+
+app.get('/getRatingAllFilmsFromDB', (request, response) => {
+    const filmId = request.params.filmId;
+    console.log(filmId);
+
+    const connection = ConnectToDB(config);    
+
+    let film_genres = [];
+    let query_genre = `SELECT fg.film_id, REPLACE(GROUP_CONCAT(g.name SEPARATOR ', '), ',', ', ') AS genre_names 
+    FROM film_genres fg 
+    JOIN genres g ON fg.genre_id = g.genre_id
+    GROUP BY fg.film_id;`;
+
+    connection.query(query_genre, (err, result, field) => {
+        result.forEach(function (item, i, arr) {
+            film_genres[item['film_id']] = item['genre_names'];
+        });
+        
+    });
 
 
+    let query = "SELECT film_id, name, poster, rating FROM films;";
+    let queryResult = {};
+
+    connection.query(query, (err, result, field) => {
+        queryResult = result;
+        result.forEach(function (item, i, arr) {
+            queryResult[i] = { "film_id": item['film_id'], "name": item['name'], "rating": item['rating'], "poster": item['poster'], "film_genres": film_genres[item['film_id']] };
+        });
+        console.log(queryResult);
+        response.send(queryResult);
+    });
+
+    CloseConnectionToDB(connection);    
+});
