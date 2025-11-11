@@ -6,6 +6,7 @@
     "express-session": "^1.17.3",
     "memory-cache": "^0.2.0",
     "mysql": "^2.18.1",
-    "mysql2": "^3.6.2"
+    "mysql2": "^3.6.2",
+    "requirejs": "^2.3.6"
   }
 }

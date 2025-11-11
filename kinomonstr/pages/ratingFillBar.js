@@ -23,7 +23,7 @@ fetch('/getRatingFilmsFromDB', {
          for (let i = 0; i < filmsTable.length; i++) {
             var filmId = filmsTable[i]['film_id'];
             CreateElement("li", "liFilm-" + filmId, "", "panelListRatings").classList.add("list-group-item", "list-group-warning");
-            CreateElement("span", "countRating-" + filmId,  filmsTable[i]['rating'], "liFilm-" + filmId).classList.add("badge");
+            CreateElement("span", "countRating-" + filmId,  filmsTable[i]['rating'].toFixed(1), "liFilm-" + filmId).classList.add("badge");
             CreateElement("a", "name-Film-" + filmId,  filmsTable[i]['name'], "liFilm-" + filmId);
             document.getElementById("name-Film-" + filmId).setAttribute('href', "show.html");
             document.getElementById("name-Film-" + filmId).setAttribute("onclick", "showFilmDetails(" + filmId + ")");

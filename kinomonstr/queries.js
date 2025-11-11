@@ -55,15 +55,18 @@ module.exports = {
 		}
 	
 
-		connection.query("SELECT * FROM users1 WHERE password LIKE '" + inserts.password_hash + "'", (err, result, field) => {
-			const users = JSON.parse(JSON.stringify(result.map(row => ({ id: row.id, username: row.username, password: row.password }))));
+		connection.query("SELECT * FROM users1 WHERE username LIKE '" + self.curr_user  + "' and password LIKE '" + inserts.password_hash + "'", (err, result, field) => {
+			const users = JSON.parse(JSON.stringify(result.map(row => ({ id: row.id, user_id: row.user_id, username: row.username, password: row.password }))));
 			console.log(users);
 			// имя пользователя найдено 
 			if (users.length > 0) {
 				console.log(users[0]['username']);
 				//localStorage.setItem("current_user", users[0]['username']);
 				cache.put("username", users[0]['username']);
+				cache.put("id_username", users[0]['user_id']);
 				//req.session.username = users[0]['username'];
+				//console.log("username", users[0]['username']);
+				//#console.log("id_username", users[0]);
 				res.status(200).send('user ' + users[0]['username'] + ' logged in!'); 
 			}
 			// пароль неверный 

@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="uk">
 
 <head>
   <meta charset="UTF-8">
-  <title>Контакти</title>
+  <title>Рейтинг фільмів</title>
   <!-- Підключаємо Bootstrap CSS через CDN -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <!-- Підключаємо style.css -->
@@ -20,12 +20,12 @@
               <div class="row">
                 <div class="col-lg-12">
                   <h1><a href="index.html">КіноМонстр</a></h1>
-                  <p>Кіно - наша пристрасть!</p>
+                  <p>Кіно - наша страсть!</p>
                 </div>
               </div>
             </div>
             <button type="button" data-target="#navbarCollapse" data-toggle="collapse" class="navbar-toggle">
-              <span class="sr-only">Переключити навігацію</span>
+              <span class="sr-only">Переключення навігації</span>
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
@@ -34,10 +34,11 @@
           <div id="navbarCollapse" class="collapse navbar-collapse navbar-right">
             <ul id = "ul-nav-id" class="nav nav-pills">
               <li> <a href="index.html">Головна</a> </li>
-              <li> <a href="films.html">Фільми</a> </li>
+              <li> <a href="films.html">Фільми</a> </li> 
               <li> <a href="raiting.html">Рейтинг фільмів</a> </li>
-              <li class="active" id="li-contacts_href"> <a href="contact.html">Контакти</a> </li>
+              <li id="li-contacts_href"> <a href="contact.html">Контакти</a> </li>
               <script src="isAdmin.js"></script>
+
               <script src="login-button.js"></script>
               <div class="modal" id="myModal">
                 <div class="modal-dialog">
@@ -131,32 +132,37 @@
   <div class="wrapper">
     <div class="container">
       <div class="row">
-        <div class="col-sm-9 col-sm-push-3">
+        <div class="col-sm-9 col-sm-push-3" id="main-products-container">
+            Оберіть операцію:
+            <select id="operation" class="form-select" onchange="ChangedSelection()">
+              <option> Додати фільм </option>
+              <option> Редагувати фільм </option>
+              <option> Видалити фільм </option>
+              <option> Додати сесію </option>
+              <option> Редагувати сесію </option>
+              <option> Видалити сесію </option>
+              <option> Додати жанр </option>
+              <option> Редагувати жанр </option>
+              <option> Видалити жанр </option>
+            </select>
 
-          <h2 class="text-center">Контакти</h2>
-          <p class="text-center">Залиште свій відгук про портал КіноМонстр</p>
-          <div class="contacts">
-            <form action="#">
-
-              <input type="text" class="form-control" placeholder="Ваше ім'я.">
-
-              <div class="input-contacts">
-                <input type="text" class="form-control" placeholder="Ваш email.">
-              </div>
-              <div class="input-group">
-                <textarea name="textarea-group" id="" cols="90" rows="10"></textarea>
-              </div>
-              <button class="btn btn-warning pull-right">Надіслати</button>
-            </form>
+          <div id="myModalConfirm" class="modal">
+            <div class="modal-content center-text">
+              <span class="close" onclick="closeModal()">&times;</span>
+              <h3 id="question_confirmation">Ви впевнені, що хочете видалити фільм?</h3>
+              <button id="sure" class="btm btn-lg btn-warning custom-mr-1">Так</button>
+              <button id="not_sure" class="btm btn-lg btn-warning custom-ml-1" onclick="closeModal()">Ні</button>
+            </div>
           </div>
+          <div id = "container-for-forms" class="form-group"></div>
+          <script src="admin-page.js"></script>
           <div class="margin-8"></div>
-
         </div>
         <div class="col-sm-3 col-sm-pull-9">
 
           <div class="panel panel-info hidden-xs">
             <div class="panel-heading">
-              <div class="sidebar-header">Пошук</div>
+              <div class="sidebar-header"></div>
             </div>
             <div class="panel-body">
               <form role="search">
@@ -172,80 +178,16 @@
               </form>
             </div>
           </div>
-
-
-          <div class="panel panel-info">
-            <div class="panel-heading">
-              <div class="sidebar-header">Вхід</div>
-            </div>
-            <div class="panel-body">
-
-              <form role="form">
-                <div class="form-group">
-                  <input type="text" class="form-control input-lg" placeholder="Логін">
-                </div>
-                <div class="form-group">
-                  <input type="password" class="form-control input-lg" placeholder="Пароль">
-                </div>
-
-                <button type="submit" class="btn btn-warning pull-right">вхід</button>
-              </form>
-
-            </div>
-          </div>
-
-
+        
           <div class="panel panel-info">
             <div class="panel-heading">
               <div class="sidebar-header">Рейтинг фільмів</div>
             </div>
             <div class="panel-body">
-
-              <ul class="list-group">
-                <li class="list-group-item list-group-warning">
-                  <span class="badge">8.9</span>
-                  <a href="show.html">Інтерстеллар</a>
-                </li>
-
-                <li class="list-group-item list-group-warning">
-                  <span class="badge">8.7</span>
-                  <a href="#">Безумний Макс</a>
-                </li>
-
-                <li class="list-group-item list-group-warning">
-                  <span class="badge">8.3</span>
-                  <a href="#">Матриця</a>
-                </li>
-
-                <li class="list-group-item list-group-warning">
-                  <span class="badge">8.1</span>
-                  <a href="#">Облачний Атлас</a>
-                </li>
-
-                <li class="list-group-item list-group-warning">
-                  <span class="badge">8.9</span>
-                  <a href="#">Інтерстеллар</a>
-                </li>
-
-                <li class="list-group-item list-group-warning">
-                  <span class="badge">8.7</span>
-                  <a href="#">Безумний Макс</a>
-                </li>
-
-                <li class="list-group-item list-group-warning">
-                  <span class="badge">8.3</span>
-                  <a href="#">Матриця</a>
-                </li>
-
-                <li class="list-group-item list-group-warning">
-                  <span class="badge">8.1</span>
-                  <a href="#">Облачний Атлас</a>
-                </li>
-              </ul>
-
+              <ul class="list-group" id = "panelListRatings"></ul>
             </div>
+           <script src="ratingFillBar.js"></script>
           </div>
-
 
         </div>
       </div>
@@ -254,10 +196,10 @@
   </div>
   <footer>
     <div class="container">
-      <p class="text-center"> <a href="">AnnaBocharova</a> </p>
+      <p class="text-center"> <a>AnnaBocharova</a> </p>
     </div>
   </footer>
-  <!-- Підключаємо jQuery і Bootstrap JS через CDN -->
+  <!-- Підключаємо jQuery та Bootstrap JS через CDN -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </body>

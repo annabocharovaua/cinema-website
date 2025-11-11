@@ -32,11 +32,96 @@
             </button>
           </div>
           <div id="navbarCollapse" class="collapse navbar-collapse navbar-right">
-            <ul class="nav nav-pills">
+            <ul id = "ul-nav-id" class="nav nav-pills">
               <li> <a href="index.html">Головна</a> </li>
               <li class="active"> <a href="films.html">Фільми</a> </li>
               <li> <a href="raiting.html">Рейтинг фільмів</a> </li>
-              <li> <a href="contact.html">Контакти</a> </li>
+              <li id="li-contacts_href"> <a href="contact.html">Контакти</a> </li>
+              <script src="isAdmin.js"></script>
+              <script src="login-button.js"></script>
+              <div class="modal" id="myModal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                          <div class="container">
+                            <div class="row">
+                            <div class="col-md-6">
+                           
+                            <div class="tab" role="tabpanel">
+                            <!-- Nav tabs -->
+                            <ul class="nav nav-tabs" role="tablist">
+                            <li role="presentation" class="active"><a href="#Section1" aria-controls="home" role="tab" data-toggle="tab">Вхід</a></li>
+                            <li role="presentation"><a href="#Section2" aria-controls="profile" role="tab" data-toggle="tab">Реєстрація</a></li>
+                            </ul>
+                            <!-- Tab panes -->
+                            <div class="tab-content tabs">
+                            <div role="tabpanel" class="tab-pane fade in active" id="Section1">
+                            <form class="form-horizontal">
+                              <div class="form-group">
+                                <label for="sing-in-login">Логін</label>
+                                <input type="text" class="form-control" id="sing-in-login" placeholder="Логін" required>
+                              </div>
+                              <div class="form-group">
+                                <label for="sing-in-password">Пароль</label>
+                                <input type="password" class="form-control input-lg" placeholder="Пароль" id="sing-in-password">
+                              </div>
+                            <div class="form-group">
+                            <div class="main-checkbox">
+                            <input value="None" id="checkbox1" name="check" type="checkbox">
+                            <label for="checkbox1"></label>
+                            </div>
+                            <span class="text">Keep me Signed in</span>
+                            </div>
+                            <div class="form-group">
+                              <button type="button" class="btn btn-warning pull-right" id="entrance-btn">Увійти</button>
+                            </div>
+                            <div class="form-group forgot-pass">
+                            <button type="submit" class="btn btn-default">forgot password</button>
+                            </div>
+                            </form>
+                            </div>
+                            <div role="tabpanel" class="tab-pane fade" id="Section2">
+                            <form class="form-horizontal">
+                              <div class="form-group">
+                                <label for="firstName">Ім'я</label>
+                                <input type="text" class="form-control" id="firstName" placeholder="Ім'я" required>
+                              </div>
+                              <div class="form-group">
+                                <label for="lastName">Прізвище</label>
+                                <input type="text" class="form-control" id="lastName" placeholder="Прізвище" required>
+                              </div>
+                              <div class="form-group">
+                                <label for="email">Електронна пошта</label>
+                                <input type="email" class="form-control" id="email" placeholder="Електронна пошта" required>
+                              </div>
+                              <div class="form-group">
+                                <label for="phone">Телефон</label>
+                                <input type="tel" class="form-control" id="phone" placeholder="Телефон" required>
+                              </div>
+                              <div class="form-group">
+                                  <label for="username">Ім'я користувача</label>
+                                  <input type="text" class="form-control" id="username" placeholder="Ім'я користувача" required>
+                              </div>
+                              <div class="form-group">
+                                  <label for="password">Пароль</label>
+                                  <input type="password" class="form-control" id="password" placeholder="Пароль" required>
+                              </div>
+                            <div class="form-group">
+                            <button type="button" class="btn btn-primary" id="registration-btn">Зареєструватися</button>
+                            <script src="registrationForm.js"></script>
+                            </div>
+                            </form>
+                            </div>
+                            </div>
+                            </div>
+                           
+                           </div><!-- /.col-md-offset-3 col-md-6 -->
+                           </div><!-- /.row -->
+                           </div><!-- /.container -->
+                      </div>
+                    </div>
+                </div>
+              </div>
             </ul>
           </div>
         </div>
