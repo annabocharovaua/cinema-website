@@ -32,6 +32,7 @@ app.get('/all', handlers.get_users);
 
 app.post('/login', handlers.check_user);
 app.post('/login', handlers.check_pass);
+app.post('/signOut', handlers.singOut);
 
 // регистрация пользователя 
 app.post('/signup', signup.addUser);
@@ -55,7 +56,7 @@ app.get('/', (request, response) => {
 });
 
 const hostname = '127.0.0.1';
-const port = 3333;
+const port = 5555;
 app.listen(port, () => {
     console.log(`Server running at http://${hostname}:${port}/`);
     console.log(`Application listening on port ${port}!`);
@@ -393,8 +394,8 @@ app.post('/postBuyTicket', (request, response) => {
 });
 
 app.get('/isAdmin', (request, response) => {
-    response.send("1");
-    /*let result = "0";
+    //response.send("1");
+    let result = "0";
     //console.log("cache.get(username)", cache.get("username"));
     if (cache.get("username") == null) {
         result = "0";
@@ -414,7 +415,7 @@ app.get('/isAdmin', (request, response) => {
             response.send(result);  
         });
         CloseConnectionToDB(connection);   
-    }*/
+    }
 });
 
 app.get('/getSumOfAllVisitorsFromDB', async (request, response) => {
@@ -423,7 +424,7 @@ app.get('/getSumOfAllVisitorsFromDB', async (request, response) => {
     const [rows, fields] = await connection.execute(query);
     response.send((rows[0]['totalVisitors']).toString());
     connection.end();
-});
+}); 
 
 app.get('/getFilmsStatisticsFromDB', async (request, response) => {
     let query = `SELECT f.film_id, f.name AS film_name, f.rating AS film_rating, COUNT(DISTINCT s.session_id) AS session_count,

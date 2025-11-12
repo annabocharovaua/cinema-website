@@ -9,7 +9,46 @@
   <!-- Підключаємо style.css -->
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
-
+<style>
+    /* Стили для модального окна */
+.modal {
+	display: none;
+	position: fixed;
+	z-index: 1;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	overflow: auto;
+	background-color: rgba(0, 0, 0, 0.7);
+	z-index: 3;
+  }
+  
+  .modal-content {
+	background-color: #fefefe;
+	margin: 15% auto;
+	padding: 20px;
+	border: 1px solid #888;
+	width: 40%;
+  }
+  
+  .close {
+	color: #170f0f;
+	float: right;
+	font-size: 28px;
+	font-weight: bold;
+  }
+  
+  .close:hover,
+  .close:focus {
+	color: black;
+	text-decoration: none;
+	cursor: pointer;
+  }
+.center-text {
+	text-align: center;
+}
+</style>
 <body>
   <div class="container-fluid">
     <div class="row">
@@ -20,7 +59,7 @@
               <div class="row">
                 <div class="col-lg-12">
                   <h1><a href="index.html">КіноМонстр</a></h1>
-                  <p>Кіно - наша страсть!</p>
+                  <p>Кіно - наша пристрасть!</p>
                 </div>
               </div>
             </div>
@@ -136,13 +175,10 @@
             Оберіть операцію:
             <select id="operation" class="form-select" onchange="ChangedSelection()">
               <option> Додати фільм </option>
-              <option> Редагувати фільм </option>
               <option> Видалити фільм </option>
               <option> Додати сесію </option>
-              <option> Редагувати сесію </option>
               <option> Видалити сесію </option>
               <option> Додати жанр </option>
-              <option> Редагувати жанр </option>
               <option> Видалити жанр </option>
             </select>
 

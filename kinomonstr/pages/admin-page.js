@@ -233,7 +233,7 @@ function DeleteFilm() {
            if (filmsTable.length == 0) 
                CreateElement("option", "optionSelectFilm" + 0, "На жаль фільми відсутні, додайте новий!", "selectFilm");
            for (let i = 0; i < filmsTable.length; i++) {
-            if (filmsTable[i]['name'] != deletedFilm)
+            if (!(filmsTable[i]['name'] === deletedFilm))
                 CreateElement("option", "optionSelectFilm" + i, filmsTable[i]['name'], "selectFilm");
            }
                
@@ -248,6 +248,7 @@ function DeleteFilm() {
         }
 
         document.getElementById("sure").onclick = function () {
+            let deletedTemp = document.getElementById("selectFilm").value;
             var userData = {
                 name : document.getElementById("selectFilm").value
             };
@@ -259,8 +260,8 @@ function DeleteFilm() {
     
             xhr.onload = function() {
               if (xhr.status === 200) {
+                deletedFilm = deletedTemp;
                 alert(this.responseText); 
-                deletedFilm = document.getElementById("selectFilm").value;
               }
               else if (xhr.status === 409) {
                 alert(this.responseText);
@@ -290,7 +291,7 @@ function DeleteGenre() {
            if (genreTable.length == 0) 
                CreateElement("option", "optionSelectGenre" + 0, "На жаль жанри відсутні, додайте новий!", "selectGenre");
            for (let i = 0; i < genreTable.length; i++) {
-                if (genreTable[i]['name'] != deletedGenre)
+                if (!(genreTable[i]['name'] === deletedGenre))
                     CreateElement("option", "optionSelectGenre" + i, genreTable[i]['name'], "selectGenre");
            }
                
@@ -307,6 +308,7 @@ function DeleteGenre() {
             var userData = {
                 name : document.getElementById("selectGenre").value
             };
+            let deletedTemp = document.getElementById("selectGenre").value;
             var xhr = new XMLHttpRequest(); 
             xhr.open('POST', '/DeleteGenreFromDB'); 
     
@@ -315,8 +317,8 @@ function DeleteGenre() {
     
             xhr.onload = function() {
               if (xhr.status === 200) {
+                deletedGenre = deletedTemp;
                 alert(this.responseText); 
-                deletedGenre = document.getElementById("selectGenre").value;
               }
               else if (xhr.status === 409) {
                 alert(this.responseText);
@@ -349,7 +351,7 @@ function DeleteSession() {
             }
             for (let i = 0; i < Object.keys(SessionTable).length; i++) {
                 let session = SessionTable[i]['film_name'] + ' | ' + SessionTable[i]['start_date'] + ' | ' + SessionTable[i]['start_time'] + ' | ' + SessionTable[i]['ticket_price'];
-                if (session != deletedSession)
+                if (!(session === deletedSession))
                     CreateElement("option", "optionSelectSession" + i, session, "selectSession");
             }
                
@@ -362,6 +364,7 @@ function DeleteSession() {
             openModal();
         }
         document.getElementById("sure").onclick = function () {
+            deletedTemp = document.getElementById("selectSession").value;
             let arr = document.getElementById("selectSession").value.split(' | ');
             var userData = {
                 film_name : arr[0],
@@ -377,8 +380,8 @@ function DeleteSession() {
     
             xhr.onload = function() {
               if (xhr.status === 200) {
+                deletedSession = deletedTemp;
                 alert(this.responseText); 
-                deletedSession = document.getElementById("selectSession").value;
               }
               else if (xhr.status === 409) {
                 alert(this.responseText);

@@ -74,5 +74,11 @@ module.exports = {
 				res.status(404).send('wrong password!'); 
 			}
 	   	})	
+	},
+
+	singOut : function (req, res){
+		cache.put("username", '');
+		cache.put("id_username", '');
+		res.status(200).send('You have successfully logged out!');
 	}
 }

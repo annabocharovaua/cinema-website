@@ -1,2 +1,2 @@
-# CinemaWebProject
-A cinema website project featuring ticket booking, movie schedules, and detailed film descriptions
+# IS
+Repository for storing works from the course "Information System"

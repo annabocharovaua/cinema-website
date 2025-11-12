@@ -122,7 +122,7 @@ function OnChangeDates() {
     })
          .then(result => result.text())
          .then(result => {
-              document.getElementById("b-sales-amount").innerText = "Загальна кількість відвідувачів за период з " + startDate + " до " + endDate + " становить: " + result;
+              document.getElementById("b-sales-amount").innerText = "Загальна кількість відвідувачів за період з " + startDate + " до " + endDate + " становить: " + result;
          });
     FillInTables(startDate, endDate);
 }
@@ -134,8 +134,9 @@ function PeriodChanged() {
          })
               .then(result => result.text())
               .then(result => {
-                   if (document.getElementById("b-sales-amount") == undefined)
-                        CreateElement("b", "b-sales-amount", "Загальна кількість відвідувачів: " + result, "sales-amount").setAttribute('style', "font-size: 1.5em;");
+                   if (document.getElementById("b-sales-amount") == undefined) {
+                    CreateElement("b", "b-sales-amount", "Загальна кількість відвідувачів: " + result, "sales-amount").setAttribute('style', "font-size: 1.5em;");
+                    }
                    else
                         document.getElementById("b-sales-amount").innerText = "Загальна кількість відвідувачів: " + result;
               });
