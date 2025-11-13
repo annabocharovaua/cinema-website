@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: pages/registrationForm.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: pages/registrationForm.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Validates a password based on specific criteria:
+ * - Minimum length of 8 characters
+ * - Maximum length of 12 characters
+ * - At least one uppercase letter
+ * - At least one lowercase letter
+ * - At least one number
+ * - At least one special character from the set [!@#$%^&amp;*]
+ *
+ * @function validatePassword
+ * @param {string} password - The password to be validated.
+ * @returns {string} - A message indicating whether the password is valid or a specific validation error.
+ * - 'Пароль повинен бути від 8 до 12 символів.' if password length is not within the required range.
+ * - 'Пароль повинен містити принаймні одну велику літеру.' if password doesn't contain at least one uppercase letter.
+ * - 'Пароль повинен містити принаймні одну малу літеру.' if password doesn't contain at least one lowercase letter.
+ * - 'Пароль повинен містити принаймні одну цифру.' if password doesn't contain at least one digit.
+ * - 'Пароль повинен містити принаймні один спеціальний символ.' if password doesn't contain at least one special character.
+ * - 'valid' if the password meets all criteria.
+ */
+function validatePassword(password) {
+    const minLength = 8;
+    const maxLength = 12;
+    const hasUpperCase = /[A-Z]/.test(password);
+    const hasLowerCase = /[a-z]/.test(password);
+    const hasNumbers = /[0-9]/.test(password);
+    const hasSpecialCharacters = /[!@#$%^&amp;*]/.test(password);
+    const isValidLength = password.length >= minLength &amp;&amp; password.length &lt;= maxLength;
+
+    if (!isValidLength) {
+        return 'Пароль повинен бути від 8 до 12 символів.';
+    }
+    if (!hasUpperCase) {
+        return 'Пароль повинен містити принаймні одну велику літеру.';
+    }
+    if (!hasLowerCase) {
+        return 'Пароль повинен містити принаймні одну малу літеру.';
+    }
+    if (!hasNumbers) {
+        return 'Пароль повинен містити принаймні одну цифру.';
+    }
+    if (!hasSpecialCharacters) {
+        return 'Пароль повинен містити принаймні один спеціальний символ.';
+    }
+
+    return 'valid';
+}
+
+/**
+ * Validates form inputs for user registration:
+ * - Ensures all fields (firstName, lastName, email, phone, username, password) are filled.
+ * - Validates the email format (should be in the form of `username@domain.com`).
+ * - Validates the phone number format (should match the pattern `+380XXXXXXXXX`).
+ * - Calls the validatePassword function to validate the password based on the set criteria.
+ *
+ * @function validateForm
+ * @param {string} firstName - The user's first name.
+ * @param {string} lastName - The user's last name.
+ * @param {string} email - The user's email address.
+ * @param {string} phone - The user's phone number.
+ * @param {string} username - The user's username.
+ * @param {string} password - The user's password.
+ * @returns {string} - A message indicating whether the form is valid or an error message for the specific field:
+ * - 'Будь ласка, введіть коректну електронну пошту' if email format is incorrect.
+ * - 'Будь ласка, введіть коректний номер телефону (+380XXXXXXXXX)' if phone number format is incorrect.
+ * - 'Будь ласка, заповніть всі поля' if any field is empty.
+ * - Returns the message from `validatePassword` if the password is invalid.
+ * - 'valid' if all form fields are valid.
+ */
+function validateForm(firstName, lastName, email, phone, username, password) {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const phoneRegex = /^\+380\d{9}$/;
+
+    if (!email.match(emailRegex)) {
+        return 'Будь ласка, введіть коректну електронну пошту';
+    }
+
+    if (!phone.match(phoneRegex)) {
+        return 'Будь ласка, введіть коректний номер телефону (+380XXXXXXXXX)';
+    }
+
+    if (!firstName || !lastName || !email || !phone || !username || !password) {
+        return 'Будь ласка, заповніть всі поля';
+    }
+
+    const validationPasswordMessage = validatePassword(password);
+
+    if (validationPasswordMessage !== 'valid') {        
+        return validationPasswordMessage;
+    }
+
+    return 'valid';
+}
+
+
+if (typeof window !== 'undefined') {
+    window.onload = function () {
+        var registration_btn = document.getElementById('registration-btn');
+        var entrance_btn = document.getElementById('entrance-btn');
+
+
+        entrance_btn.onclick = function () {
+            if (document.getElementById('sing-in-login').value.length == 0 || 
+                document.getElementById('sing-in-password').value.length == 0) {
+                alert('invalid data in form!');
+                return false; 
+            }
+
+            var userData = {
+                username: document.getElementById('sing-in-login').value, 
+                password: document.getElementById('sing-in-password').value
+            };
+            var xhr = new XMLHttpRequest(); 
+            xhr.open('POST', '/login'); 
+            
+
+            xhr.setRequestHeader('Content-Type', 'application/json'); 
+            xhr.send(JSON.stringify(userData)); 
+
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    alert(this.responseText); 
+                    location.reload();
+                }
+                else if (xhr.status === 409) {
+                    alert('user not found!');
+                }
+                else if (xhr.status === 404) {
+                    alert('wrong password!');
+                }
+            }; 
+
+            xhr.onerror = function() {
+                alert('server error!'); 
+            }
+
+        }
+
+        registration_btn.onclick = function () {       
+            const firstName = document.getElementById("firstName").value;
+            const lastName = document.getElementById("lastName").value;
+            const email = document.getElementById("email").value;
+            const phone = document.getElementById("phone").value;
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+
+            const validationMessage = validateForm(firstName, lastName, email, phone, username, password);
+
+            if (validationMessage !== 'valid') {
+                alert(validationMessage);
+                return;
+            }
+
+            const formData = {
+                firstName: firstName,
+                lastName: lastName,
+                email: email,
+                phone: phone,
+                username: username,
+                password: password
+            };
+
+            
+            var data = {
+            firstName: document.getElementById('firstName').value, 
+            lastName: document.getElementById('lastName').value, 
+            email: document.getElementById('email').value, 
+            phone: document.getElementById('phone').value, 
+            username: document.getElementById('username').value, 
+            password: document.getElementById('password').value
+            }
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/signup'); 
+
+            xhr.setRequestHeader('Content-Type', 'application/json'); 
+            xhr.send(JSON.stringify(data));
+
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    alert('user successfully created!'); 
+                    location.reload();
+                } else if (xhr.status === 409) {
+                    alert('User with the same username already exists!');
+                } else {
+                    console.error('Error:', xhr.status);
+                }  
+            };
+        }
+    }
+}
+else {
+    module.exports = {
+        validatePassword,
+        validateForm
+    };
+}
+
+
+
+
+window.onload = function () {
+    var registration_btn = document.getElementById('registration-btn');
+    var entrance_btn = document.getElementById('entrance-btn');
+
+
+    entrance_btn.onclick = function () {
+        if (document.getElementById('sing-in-login').value.length == 0 || 
+              document.getElementById('sing-in-password').value.length == 0) {
+              alert('invalid data in form!');
+              return false; 
+          }
+
+          var userData = {
+              username: document.getElementById('sing-in-login').value, 
+              password: document.getElementById('sing-in-password').value
+          };
+          var xhr = new XMLHttpRequest(); 
+          xhr.open('POST', '/login'); 
+           
+
+          xhr.setRequestHeader('Content-Type', 'application/json'); 
+          xhr.send(JSON.stringify(userData)); 
+
+          xhr.onload = function() {
+            if (xhr.status === 200) {
+                  alert(this.responseText); 
+                  location.reload();
+            }
+            else if (xhr.status === 409) {
+                alert('user not found!');
+            }
+            else if (xhr.status === 404) {
+                alert('wrong password!');
+            }
+          }; 
+
+          xhr.onerror = function() {
+              alert('server error!'); 
+          }
+
+      }
+
+      registration_btn.onclick = function () {
+       
+        const firstName = document.getElementById("firstName").value;
+        const lastName = document.getElementById("lastName").value;
+        const email = document.getElementById("email").value;
+        const phone = document.getElementById("phone").value;
+        const username = document.getElementById("username").value;
+        const password = document.getElementById("password").value; 
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!email.match(emailRegex)) {
+            alert("Будь ласка, введіть коректну електронну пошту");
+            return;
+        }
+
+        const phoneRegex = /^\+380\d{9}$/;
+        if (!phone.match(phoneRegex)) {
+            alert("Будь ласка, введіть коректний номер телефону (+380XXXXXXXXX)");
+            return;
+        }
+
+        if (!firstName || !lastName || !email || !phone || !username || !password) {
+            alert("Будь ласка, заповніть всі поля");
+            return;
+        }
+
+        const formData = {
+            firstName: firstName,
+            lastName: lastName,
+            email: email,
+            phone: phone,
+            username: username,
+            password: password
+        };
+
+        var data = {
+          firstName: document.getElementById('firstName').value, 
+          lastName: document.getElementById('lastName').value, 
+          email: document.getElementById('email').value, 
+          phone: document.getElementById('phone').value, 
+          username: document.getElementById('username').value, 
+          password: document.getElementById('password').value
+        }
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/signup'); 
+
+        xhr.setRequestHeader('Content-Type', 'application/json'); 
+        xhr.send(JSON.stringify(data));
+
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                alert('user successfully created!'); 
+                location.reload();
+            } else if (xhr.status === 409) {
+                alert('User with the same username already exists!');
+            } else {
+                console.error('Error:', xhr.status);
+            }  
+        };
+    }
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#AddFieldGenre">AddFieldGenre</a></li><li><a href="global.html#AddNewFilm">AddNewFilm</a></li><li><a href="global.html#AddNewGenreToDB">AddNewGenreToDB</a></li><li><a href="global.html#AddNewSession">AddNewSession</a></li><li><a href="global.html#AddNewSessionToDB">AddNewSessionToDB</a></li><li><a href="global.html#BuyTicket">BuyTicket</a></li><li><a href="global.html#ChangedSelection">ChangedSelection</a></li><li><a href="global.html#CloseConnectionToDB">CloseConnectionToDB</a></li><li><a href="global.html#ConnectToDB">ConnectToDB</a></li><li><a href="global.html#CreateElement">CreateElement</a></li><li><a href="global.html#CreateElementInput">CreateElementInput</a></li><li><a href="global.html#CreateTable2">CreateTable2</a></li><li><a href="global.html#DeleteFieldGenre">DeleteFieldGenre</a></li><li><a href="global.html#DeleteFilm">DeleteFilm</a></li><li><a href="global.html#DeleteFilmFromDB">DeleteFilmFromDB</a></li><li><a href="global.html#DeleteGenre">DeleteGenre</a></li><li><a href="global.html#DeleteGenreFromDB">DeleteGenreFromDB</a></li><li><a href="global.html#DeleteSession">DeleteSession</a></li><li><a href="global.html#DeleteSessionFromDB">DeleteSessionFromDB</a></li><li><a href="global.html#FillInFilmsStatisticsTable">FillInFilmsStatisticsTable</a></li><li><a href="global.html#FillInTables">FillInTables</a></li><li><a href="global.html#GET/getDaysWithSessions/:filmId">GET /getDaysWithSessions/:filmId</a></li><li><a href="global.html#GET/getFilmDetails/:filmId">GET /getFilmDetails/:filmId</a></li><li><a href="global.html#GET/getFilmIdsFromDB">GET /getFilmIdsFromDB</a></li><li><a href="global.html#GET/getFilmNamesFromDB">GET /getFilmNamesFromDB</a></li><li><a href="global.html#GET/getFilmsFromDB">GET /getFilmsFromDB</a></li><li><a href="global.html#GET/getFilmsStatisticsFromDB">GET /getFilmsStatisticsFromDB</a></li><li><a href="global.html#GET/getFirstAndLastName">GET /getFirstAndLastName</a></li><li><a href="global.html#GET/getGenresFromDB">GET /getGenresFromDB</a></li><li><a href="global.html#GET/getPosterNewFilmsFromDB">GET /getPosterNewFilmsFromDB</a></li><li><a href="global.html#GET/getRatingAllFilmsFromDB">GET /getRatingAllFilmsFromDB</a></li><li><a href="global.html#GET/getRatingFilmsFromDB">GET /getRatingFilmsFromDB</a></li><li><a href="global.html#GET/getSeats/:filmId/:date/:time">GET /getSeats/:filmId/:date/:time</a></li><li><a href="global.html#GET/getSessions/:filmId/:date">GET /getSessions/:filmId/:date</a></li><li><a href="global.html#GET/getSumOfAllVisitorsFromDB">GET /getSumOfAllVisitorsFromDB</a></li><li><a href="global.html#GET/getTotalProfitFromDB">GET /getTotalProfitFromDB</a></li><li><a href="global.html#GET/getUsernameAndId">GET /getUsernameAndId</a></li><li><a href="global.html#GET/isAdmin">GET /isAdmin</a></li><li><a href="global.html#OnChangeDates">OnChangeDates</a></li><li><a href="global.html#OnChangeDates2">OnChangeDates2</a></li><li><a href="global.html#POST/AddNewFilmToDB">POST /AddNewFilmToDB</a></li><li><a href="global.html#POST/getFilmsStatisticsForThePeriodFromDB">POST /getFilmsStatisticsForThePeriodFromDB</a></li><li><a href="global.html#POST/getSumOfAllVisitorsForThePeriodFromDB">POST /getSumOfAllVisitorsForThePeriodFromDB</a></li><li><a href="global.html#POST/getTotalProfitForThePeriodFromDB">POST /getTotalProfitForThePeriodFromDB</a></li><li><a href="global.html#POST/postBuyTicket">POST /postBuyTicket</a></li><li><a href="global.html#POST/postReviewToDB">POST /postReviewToDB</a></li><li><a href="global.html#PeriodChanged">PeriodChanged</a></li><li><a href="global.html#ResetContainerForForms">ResetContainerForForms</a></li><li><a href="global.html#SelectSeat">SelectSeat</a></li><li><a href="global.html#addOptionsDays">addOptionsDays</a></li><li><a href="global.html#addOptionsSessions">addOptionsSessions</a></li><li><a href="global.html#addSeats">addSeats</a></li><li><a href="global.html#checkAdminAndUpdateMenu">checkAdminAndUpdateMenu</a></li><li><a href="global.html#closeModal">closeModal</a></li><li><a href="global.html#createButton">createButton</a></li><li><a href="global.html#curry">curry</a></li><li><a href="global.html#fetchAndDisplayFilms">fetchAndDisplayFilms</a></li><li><a href="global.html#getSessionsFromDB">getSessionsFromDB</a></li><li><a href="global.html#handleUserSession">handleUserSession</a></li><li><a href="global.html#loadFilmPosters">loadFilmPosters</a></li><li><a href="global.html#loadFilmRatings">loadFilmRatings</a></li><li><a href="global.html#openModal">openModal</a></li><li><a href="global.html#queryPromise">queryPromise</a></li><li><a href="global.html#showFilmDetails">showFilmDetails</a></li><li><a href="global.html#validateForm">validateForm</a></li><li><a href="global.html#validatePassword">validatePassword</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Mon Nov 11 2024 19:31:00 GMT+0200 (за східноєвропейським стандартним часом)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

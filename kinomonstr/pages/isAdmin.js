@@ -1,3 +1,15 @@
+/**
+ * Fetches the user's role from the server to determine if they are an admin.
+ * If the user is an admin, it modifies the navigation menu to include links to the "Analytics" and "Admin Page".
+ * Depending on the current page, the relevant menu items are highlighted.
+ * 
+ * - If the user is on the "analytics.html" page, the "Analytics" link will be active and the "Admin Page" link will be added.
+ * - If the user is on the "admin-page.html" page, the "Admin Page" link will be active and the "Analytics" link will be added.
+ * - If the user is on any other page, both the "Analytics" and "Admin Page" links will be added to the menu.
+ *
+ * @function checkAdminAndUpdateMenu
+ * @returns {void} - Modifies the navigation menu based on the user's admin status and the current page.
+ */
 fetch (`/isAdmin`, {
         method: 'GET',
     })
@@ -16,7 +28,7 @@ fetch (`/isAdmin`, {
                 document.getElementById("li-contacts_href").insertAdjacentHTML('afterend', '<li> <a href="analytics.html">Аналітика</a> </li>');
                 document.getElementById("li-contacts_href").insertAdjacentHTML('afterend', '<li> <a href="admin-page.html">Сторінка адміністратора</a> </li>');
             }
-            //location.reload();
+            
         }
         else return;
     });

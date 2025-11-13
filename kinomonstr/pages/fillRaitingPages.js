@@ -9,10 +9,33 @@ function CreateElement(nameElement, idElement, innerText, parentId) {
     return element;
 }
 
+/**
+ * Stores the selected film's ID in the local storage for display on the details page.
+ * 
+ * @function showFilmDetails
+ * @param {number} filmId - The ID of the film whose details are to be displayed.
+ * @returns {void} - Saves the film ID to the local storage under the key "FILM_ID".
+ */
 function showFilmDetails(filmId) {
     localStorage.setItem("FILM_ID", filmId);
 }
 
+/**
+ * Fetches the film ratings from the server, then dynamically creates a table displaying film details
+ * including poster, name, genres, and rating.
+ * 
+ * The table consists of several columns:
+ * - A column with the film poster.
+ * - A column with a link to the film details page.
+ * - A column showing the film genres.
+ * - A column displaying the film's rating in a badge style.
+ * 
+ * The film name is a clickable link that, when clicked, stores the selected film's ID in local storage
+ * and redirects the user to the "show.html" page.
+ * 
+ * @function loadFilmRatings
+ * @returns {void} - Fetches the film ratings, processes the response, and populates the HTML table.
+ */
 fetch('/getRatingAllFilmsFromDB', {
     method: 'GET',
 })

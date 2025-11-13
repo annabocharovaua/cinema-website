@@ -34,10 +34,9 @@ module.exports = {
 			console.log(users);
 			if (users.length > 0) {
 				self.curr_user = users[0]['username'];  				
-				// перейfи к проверке пароля 
+				// Перейти до перевірки пароля
 				next()
 			} 
-			// имя пользователя не найдено 
 			else {
 				res.status(409).send('user not found!'); 
 			} 
@@ -45,15 +44,12 @@ module.exports = {
 		});		
 	}, 
 
-    // проверка пароля 
     check_pass: function (req, res) { 
-		//console.log(req);
 
 		var self = this; 
 		var inserts = {
-			password_hash: pass_handler.encrypt_pass(req.body.password) // хэширование пароля 
-		}
-	
+			password_hash: pass_handler.encrypt_pass(req.body.password) 
+		}	
 
 		connection.query("SELECT * FROM users1 WHERE username LIKE '" + self.curr_user  + "' and password LIKE '" + inserts.password_hash + "'", (err, result, field) => {
 			const users = JSON.parse(JSON.stringify(result.map(row => ({ id: row.id, user_id: row.user_id, username: row.username, password: row.password }))));
@@ -69,7 +65,7 @@ module.exports = {
 				//#console.log("id_username", users[0]);
 				res.status(200).send('user ' + users[0]['username'] + ' logged in!'); 
 			}
-			// пароль неверный 
+			// пароль невірний
 			else {
 				res.status(404).send('wrong password!'); 
 			}

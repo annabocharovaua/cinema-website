@@ -4,13 +4,11 @@
 <head>
   <meta charset="UTF-8">
   <title>Рейтинг фільмів</title>
-  <!-- Підключаємо Bootstrap CSS через CDN -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <!-- Підключаємо style.css -->
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <style>
-    /* Стили для модального окна */
+
 .modal {
 	display: none;
 	position: fixed;
@@ -149,6 +147,7 @@
                             <div class="form-group">
                             <button type="button" class="btn btn-primary" id="registration-btn">Зареєструватися</button>
                             <script src="registrationForm.js"></script>
+                            <script type="module" src="validationRegistrationForm.js"></script>
                             </div>
                             </form>
                             </div>
@@ -176,8 +175,8 @@
             <select id="operation" class="form-select" onchange="ChangedSelection()">
               <option> Додати фільм </option>
               <option> Видалити фільм </option>
-              <option> Додати сесію </option>
-              <option> Видалити сесію </option>
+              <option> Додати сеанс </option>
+              <option> Видалити сеанс </option>
               <option> Додати жанр </option>
               <option> Видалити жанр </option>
             </select>

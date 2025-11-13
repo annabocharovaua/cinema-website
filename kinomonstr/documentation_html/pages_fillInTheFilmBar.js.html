@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: pages/fillInTheFilmBar.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: pages/fillInTheFilmBar.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>myStorage = window.localStorage;
+
+/**
+ * Creates a new HTML element with specified properties and appends it to a parent element.
+ * 
+ * @function CreateElement
+ * @param {string} nameElement - The type of the element to create (e.g., "div", "span", "p").
+ * @param {string} idElement - The id attribute for the new element.
+ * @param {string} innerText - The inner text content for the new element.
+ * @param {string} parentId - The id of the parent element to which the new element will be appended.
+ * @returns {HTMLElement} The created HTML element.
+ * @description 
+ * This function creates a new element with the provided tag name, id, inner text, and appends it
+ * to the specified parent element. If the parent element's id is "body", it appends to the body of the page.
+ * Otherwise, it appends to the element with the provided parent id.
+ */
+function CreateElement(nameElement, idElement, innerText, parentId) {
+    let element = document.createElement(nameElement);
+    element.id = idElement;
+    element.innerText = innerText;
+    if (parentId == "body")
+         document.body.appendChild(element);
+    else
+         document.getElementById(parentId).appendChild(element);
+    return element;
+}
+
+/**
+ * Saves the film ID to local storage when a film is selected for viewing in more detail.
+ * 
+ * @function showFilmDetails
+ * @param {number} filmId - The ID of the selected film.
+ * @description 
+ * This function stores the provided film ID in the localStorage under the key "FILM_ID".
+ * This allows the selected film to be viewed in more detail on a different page.
+ */
+function showFilmDetails(filmId) {
+     localStorage.setItem("FILM_ID", filmId);
+}
+
+ /**
+ * Fetches the list of films from the server and dynamically creates HTML elements 
+ * to display the films in a catalog format.
+ * 
+ * @function fetchAndDisplayFilms
+ * @description 
+ * This function sends a GET request to fetch the list of films from the server. 
+ * It then parses the JSON response and dynamically creates HTML elements to display 
+ * each film's poster, name, director, genres, duration, and description in the "filmsCatalog" element.
+ * Each film will have a "Details" button that allows the user to view more information about the film.
+ */
+fetch('/getFilmsFromDB', {
+    method: 'GET',
+})
+    .then(res => res.text())
+    .then(res => {
+         typeof (res);
+         let filmsTable = JSON.parse(res);
+         for (let i = 0; i &lt; filmsTable.length; i++) {
+            var filmId = filmsTable[i]['film_id'];
+            CreateElement("div", "rowFilm-" + filmId, "", "filmsCatalog").classList.add("row");
+            CreateElement("div", "wellFilm-" + filmId, "", "rowFilm-" + filmId).classList.add("well", "clearfix");
+            CreateElement("div", "posterFilm-" + filmId, "", "wellFilm-" + filmId).classList.add("col-lg-3", "col-md-2", "text-center");
+            CreateElement("img", "imgFilm-" + filmId, "", "posterFilm-" + filmId).classList.add("img-thumbnail");
+            document.getElementById("imgFilm-" + filmId).setAttribute('src', "assets/img/"+filmsTable[i]['poster']);
+            document.getElementById("imgFilm-" + filmId).setAttribute('alt', filmsTable[i]['name']);
+            CreateElement("div", "descriptionFilm-" + filmId, "", "wellFilm-" + filmId).classList.add("col-lg-9", "col-md-10");
+            CreateElement("b", "nameFilmDiv-" + filmId, "Назва: ", "descriptionFilm-" + filmId);
+            CreateElement("span", "nameFilm-" + filmId, filmsTable[i]['name'], "descriptionFilm-" + filmId);
+            CreateElement("p", "directorFilmDivP-" + filmId, "", "descriptionFilm-" + filmId);
+            CreateElement("b", "directorFilmDiv-" + filmId, "Режисер: ", "descriptionFilm-" + filmId);
+            CreateElement("span", "directorFilm-" + filmId, filmsTable[i]['director'], "descriptionFilm-" + filmId);
+            CreateElement("p", "genresFilmDivP-" + filmId, "", "descriptionFilm-" + filmId);
+            CreateElement("b", "genresFilmDiv-" + filmId, "Жанри: ", "descriptionFilm-" + filmId);
+            CreateElement("span", "genresFilm-" + filmId, filmsTable[i]['film_genres'], "descriptionFilm-" + filmId);
+            CreateElement("p", "durationFilmDivP-" + filmId, "", "descriptionFilm-" + filmId);
+            CreateElement("b", "durationFilmDiv-" + filmId, "Тривалість: ", "descriptionFilm-" + filmId);
+            CreateElement("span", "durationFilm-" + filmId, filmsTable[i]['duration'] + " хв", "descriptionFilm-" + filmId);
+          
+            CreateElement("p", "descriptionTextFilmDivP-" + filmId, "", "descriptionFilm-" + filmId);
+
+            CreateElement("p", "descriptionTextFilm-" + filmId, filmsTable[i]['description'], "descriptionFilm-" + filmId);
+            CreateElement("div", "detailsFilm-" + filmId, "", "wellFilm-" + filmId).classList.add("col-lg-12");
+            CreateElement("a", "hrefFilm-" + filmId, "Детальніше", "detailsFilm-" + filmId).classList.add("btn", "btn-lg","btn-warning", "pull-right");
+
+            document.getElementById("hrefFilm-" + filmId).setAttribute("onclick", "showFilmDetails(" + filmId + ")");
+            document.getElementById("hrefFilm-" + filmId).setAttribute('href', "show.html");           
+         }
+    });
+
+
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#AddFieldGenre">AddFieldGenre</a></li><li><a href="global.html#AddNewFilm">AddNewFilm</a></li><li><a href="global.html#AddNewGenreToDB">AddNewGenreToDB</a></li><li><a href="global.html#AddNewSession">AddNewSession</a></li><li><a href="global.html#AddNewSessionToDB">AddNewSessionToDB</a></li><li><a href="global.html#BuyTicket">BuyTicket</a></li><li><a href="global.html#ChangedSelection">ChangedSelection</a></li><li><a href="global.html#CloseConnectionToDB">CloseConnectionToDB</a></li><li><a href="global.html#ConnectToDB">ConnectToDB</a></li><li><a href="global.html#CreateElement">CreateElement</a></li><li><a href="global.html#CreateElementInput">CreateElementInput</a></li><li><a href="global.html#CreateTable2">CreateTable2</a></li><li><a href="global.html#DeleteFieldGenre">DeleteFieldGenre</a></li><li><a href="global.html#DeleteFilm">DeleteFilm</a></li><li><a href="global.html#DeleteFilmFromDB">DeleteFilmFromDB</a></li><li><a href="global.html#DeleteGenre">DeleteGenre</a></li><li><a href="global.html#DeleteGenreFromDB">DeleteGenreFromDB</a></li><li><a href="global.html#DeleteSession">DeleteSession</a></li><li><a href="global.html#DeleteSessionFromDB">DeleteSessionFromDB</a></li><li><a href="global.html#FillInFilmsStatisticsTable">FillInFilmsStatisticsTable</a></li><li><a href="global.html#FillInTables">FillInTables</a></li><li><a href="global.html#GET/getDaysWithSessions/:filmId">GET /getDaysWithSessions/:filmId</a></li><li><a href="global.html#GET/getFilmDetails/:filmId">GET /getFilmDetails/:filmId</a></li><li><a href="global.html#GET/getFilmIdsFromDB">GET /getFilmIdsFromDB</a></li><li><a href="global.html#GET/getFilmNamesFromDB">GET /getFilmNamesFromDB</a></li><li><a href="global.html#GET/getFilmsFromDB">GET /getFilmsFromDB</a></li><li><a href="global.html#GET/getFilmsStatisticsFromDB">GET /getFilmsStatisticsFromDB</a></li><li><a href="global.html#GET/getFirstAndLastName">GET /getFirstAndLastName</a></li><li><a href="global.html#GET/getGenresFromDB">GET /getGenresFromDB</a></li><li><a href="global.html#GET/getPosterNewFilmsFromDB">GET /getPosterNewFilmsFromDB</a></li><li><a href="global.html#GET/getRatingAllFilmsFromDB">GET /getRatingAllFilmsFromDB</a></li><li><a href="global.html#GET/getRatingFilmsFromDB">GET /getRatingFilmsFromDB</a></li><li><a href="global.html#GET/getSeats/:filmId/:date/:time">GET /getSeats/:filmId/:date/:time</a></li><li><a href="global.html#GET/getSessions/:filmId/:date">GET /getSessions/:filmId/:date</a></li><li><a href="global.html#GET/getSumOfAllVisitorsFromDB">GET /getSumOfAllVisitorsFromDB</a></li><li><a href="global.html#GET/getTotalProfitFromDB">GET /getTotalProfitFromDB</a></li><li><a href="global.html#GET/getUsernameAndId">GET /getUsernameAndId</a></li><li><a href="global.html#GET/isAdmin">GET /isAdmin</a></li><li><a href="global.html#OnChangeDates">OnChangeDates</a></li><li><a href="global.html#OnChangeDates2">OnChangeDates2</a></li><li><a href="global.html#POST/AddNewFilmToDB">POST /AddNewFilmToDB</a></li><li><a href="global.html#POST/getFilmsStatisticsForThePeriodFromDB">POST /getFilmsStatisticsForThePeriodFromDB</a></li><li><a href="global.html#POST/getSumOfAllVisitorsForThePeriodFromDB">POST /getSumOfAllVisitorsForThePeriodFromDB</a></li><li><a href="global.html#POST/getTotalProfitForThePeriodFromDB">POST /getTotalProfitForThePeriodFromDB</a></li><li><a href="global.html#POST/postBuyTicket">POST /postBuyTicket</a></li><li><a href="global.html#POST/postReviewToDB">POST /postReviewToDB</a></li><li><a href="global.html#PeriodChanged">PeriodChanged</a></li><li><a href="global.html#ResetContainerForForms">ResetContainerForForms</a></li><li><a href="global.html#SelectSeat">SelectSeat</a></li><li><a href="global.html#addOptionsDays">addOptionsDays</a></li><li><a href="global.html#addOptionsSessions">addOptionsSessions</a></li><li><a href="global.html#addSeats">addSeats</a></li><li><a href="global.html#checkAdminAndUpdateMenu">checkAdminAndUpdateMenu</a></li><li><a href="global.html#closeModal">closeModal</a></li><li><a href="global.html#createButton">createButton</a></li><li><a href="global.html#curry">curry</a></li><li><a href="global.html#fetchAndDisplayFilms">fetchAndDisplayFilms</a></li><li><a href="global.html#getSessionsFromDB">getSessionsFromDB</a></li><li><a href="global.html#handleUserSession">handleUserSession</a></li><li><a href="global.html#loadFilmPosters">loadFilmPosters</a></li><li><a href="global.html#loadFilmRatings">loadFilmRatings</a></li><li><a href="global.html#openModal">openModal</a></li><li><a href="global.html#queryPromise">queryPromise</a></li><li><a href="global.html#showFilmDetails">showFilmDetails</a></li><li><a href="global.html#validateForm">validateForm</a></li><li><a href="global.html#validatePassword">validatePassword</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Mon Nov 11 2024 19:31:00 GMT+0200 (за східноєвропейським стандартним часом)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -3,15 +3,14 @@ const cache = require('memory-cache');
 module.exports = function (app) {
 	app.get('/logout', function(req, res) {
 		var username = cache.put("username", '');
-		//req.session.username = '';
 		console.log('logged out'); 
 		res.send('logged out!');  
 	}); 
 
-	// ограничение доступа к контенту на основе авторизации 
+// обмеження доступу до контенту на основі авторизації
 	app.get('/admin', function (req, res) {
 		var username = cache.get("username")
-		// страница доступна только для админа 
+			// сторінка доступна тільки для адміністратора 
 		if (username == 'admin') {
 			console.log(username + ' requested admin page');
 			res.render('admin_page');
@@ -23,10 +22,9 @@ module.exports = function (app) {
 
 	app.get('/user', function (req, res) {
 		var username = cache.get("username");
-		// страница доступна для любого залогиненного пользователя 
+			// сторінка доступна для будь-якого залогіненого користувача
 		if (username.length > 0) {
 			console.log(username + ' requested user page');
-			//res.render('films.html');
 		} else {
 			res.status(403).send('Access Denied!');
 		}
@@ -34,8 +32,7 @@ module.exports = function (app) {
 	});
 
 	app.get('/guest', function (req, res) {
-
-		// страница без ограничения доступа 
+		// сторінка без обмежень доступу
 		res.render('guest_page'); 
 	})
 }

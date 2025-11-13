@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: pages/indexFillBar.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: pages/indexFillBar.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>function CreateElement(nameElement, idElement, innerText, parentId) {
+    let element = document.createElement(nameElement);
+    element.id = idElement;
+    element.innerText = innerText;
+    if (parentId == "body")
+         document.body.appendChild(element);
+    else
+         document.getElementById(parentId).appendChild(element);
+    return element;
+}
+
+/**
+ * Sets the selected film's ID in the local storage to be used on the details page.
+ * 
+ * @function showFilmDetails
+ * @param {number} filmId - The ID of the film whose details are to be displayed.
+ * @returns {void} - Stores the film ID in the local storage under the key "FILM_ID".
+ */
+function showFilmDetails(filmId) {
+     localStorage.setItem("FILM_ID", filmId);
+}
+
+ /**
+ * Fetches the latest film posters from the database, then dynamically creates and displays film posters
+ * on the webpage, categorizing them into two rows of posters. 
+ * Each film poster is clickable and will set the selected film's ID to local storage for display on the details page.
+ * 
+ * - Displays the first 4 films in a single row.
+ * - Displays additional films in a second row if there are more than 4 films.
+ * 
+ * The created film posters are linked to the "show.html" page and set the `showFilmDetails` function on click.
+ * 
+ * @function loadFilmPosters
+ * @returns {void} - Fetches the film posters, parses the response, and displays them in the DOM.
+ */
+fetch('/getPosterNewFilmsFromDB', {
+    method: 'GET',
+})
+    .then(res => res.text())
+    .then(res => {
+         typeof (res);
+         let filmsPosterTable = JSON.parse(res);
+         var counter = 1;
+         for (let i = filmsPosterTable.length-1; i > filmsPosterTable.length-9 &amp;&amp; i >= 0; i--) {
+            var filmId = filmsPosterTable[i]['film_id'];
+            if (counter &lt;= 4) {
+            CreateElement("div", "posterFilm-" + filmId, "", "posterFilmsCatalog").classList.add("films_block", "col-lg-3", "col-md-3", "col-sm-3", "col-xs-6");
+            CreateElement("a", "a-imgPoster-" + filmId, "", "posterFilm-" + filmId);
+            CreateElement("img", "imgPoster-" + filmId, "", "a-imgPoster-" + filmId);
+            document.getElementById("imgPoster-" + filmId).setAttribute('src', "assets/img/"+filmsPosterTable[i]['poster']);
+            CreateElement("div", "nameFilm-" + filmId,  filmsPosterTable[i]['name'], "posterFilm-" + filmId).classList.add("film_labbel");
+
+            document.getElementById("a-imgPoster-" + filmId).setAttribute('href', "show.html");
+            document.getElementById("a-imgPoster-" + filmId).setAttribute("onclick", "showFilmDetails(" + filmId + ")");
+          }
+
+          if (counter == 4) {
+
+               let element = document.createElement("div");
+               element.id = "row2";
+               element.innerText = "";
+               element.classList.add("row", "media");
+               document.getElementById("posterFilmsCatalog").insertAdjacentElement('afterend', element);
+          }
+          else if (counter > 4) {
+               CreateElement("div", "row2-posterFilm-" + filmId, "", "row2").classList.add("films_block", "col-lg-3", "col-md-3", "col-sm-3", "col-xs-6");
+               CreateElement("a", "a-imgPoster-" + filmId, "", "row2-posterFilm-" + filmId);
+               CreateElement("img", "row2-imgPoster-" + filmId, "", "a-imgPoster-" + filmId);
+               document.getElementById("row2-imgPoster-" + filmId).setAttribute('src', "assets/img/"+filmsPosterTable[i]['poster']);
+
+
+               document.getElementById("a-imgPoster-" + filmId).setAttribute('href', "show.html");
+               document.getElementById("a-imgPoster-" + filmId).setAttribute("onclick", "showFilmDetails(" + filmId + ")");
+   
+               CreateElement("div", "row2-nameFilm-" + filmId,  filmsPosterTable[i]['name'], "row2-posterFilm-" + filmId).classList.add("film_labbel");
+
+          }
+          counter++;
+     }
+    });
+
+    </code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#AddFieldGenre">AddFieldGenre</a></li><li><a href="global.html#AddNewFilm">AddNewFilm</a></li><li><a href="global.html#AddNewGenreToDB">AddNewGenreToDB</a></li><li><a href="global.html#AddNewSession">AddNewSession</a></li><li><a href="global.html#AddNewSessionToDB">AddNewSessionToDB</a></li><li><a href="global.html#BuyTicket">BuyTicket</a></li><li><a href="global.html#ChangedSelection">ChangedSelection</a></li><li><a href="global.html#CloseConnectionToDB">CloseConnectionToDB</a></li><li><a href="global.html#ConnectToDB">ConnectToDB</a></li><li><a href="global.html#CreateElement">CreateElement</a></li><li><a href="global.html#CreateElementInput">CreateElementInput</a></li><li><a href="global.html#CreateTable2">CreateTable2</a></li><li><a href="global.html#DeleteFieldGenre">DeleteFieldGenre</a></li><li><a href="global.html#DeleteFilm">DeleteFilm</a></li><li><a href="global.html#DeleteFilmFromDB">DeleteFilmFromDB</a></li><li><a href="global.html#DeleteGenre">DeleteGenre</a></li><li><a href="global.html#DeleteGenreFromDB">DeleteGenreFromDB</a></li><li><a href="global.html#DeleteSession">DeleteSession</a></li><li><a href="global.html#DeleteSessionFromDB">DeleteSessionFromDB</a></li><li><a href="global.html#FillInFilmsStatisticsTable">FillInFilmsStatisticsTable</a></li><li><a href="global.html#FillInTables">FillInTables</a></li><li><a href="global.html#GET/getDaysWithSessions/:filmId">GET /getDaysWithSessions/:filmId</a></li><li><a href="global.html#GET/getFilmDetails/:filmId">GET /getFilmDetails/:filmId</a></li><li><a href="global.html#GET/getFilmIdsFromDB">GET /getFilmIdsFromDB</a></li><li><a href="global.html#GET/getFilmNamesFromDB">GET /getFilmNamesFromDB</a></li><li><a href="global.html#GET/getFilmsFromDB">GET /getFilmsFromDB</a></li><li><a href="global.html#GET/getFilmsStatisticsFromDB">GET /getFilmsStatisticsFromDB</a></li><li><a href="global.html#GET/getFirstAndLastName">GET /getFirstAndLastName</a></li><li><a href="global.html#GET/getGenresFromDB">GET /getGenresFromDB</a></li><li><a href="global.html#GET/getPosterNewFilmsFromDB">GET /getPosterNewFilmsFromDB</a></li><li><a href="global.html#GET/getRatingAllFilmsFromDB">GET /getRatingAllFilmsFromDB</a></li><li><a href="global.html#GET/getRatingFilmsFromDB">GET /getRatingFilmsFromDB</a></li><li><a href="global.html#GET/getSeats/:filmId/:date/:time">GET /getSeats/:filmId/:date/:time</a></li><li><a href="global.html#GET/getSessions/:filmId/:date">GET /getSessions/:filmId/:date</a></li><li><a href="global.html#GET/getSumOfAllVisitorsFromDB">GET /getSumOfAllVisitorsFromDB</a></li><li><a href="global.html#GET/getTotalProfitFromDB">GET /getTotalProfitFromDB</a></li><li><a href="global.html#GET/getUsernameAndId">GET /getUsernameAndId</a></li><li><a href="global.html#GET/isAdmin">GET /isAdmin</a></li><li><a href="global.html#OnChangeDates">OnChangeDates</a></li><li><a href="global.html#OnChangeDates2">OnChangeDates2</a></li><li><a href="global.html#POST/AddNewFilmToDB">POST /AddNewFilmToDB</a></li><li><a href="global.html#POST/getFilmsStatisticsForThePeriodFromDB">POST /getFilmsStatisticsForThePeriodFromDB</a></li><li><a href="global.html#POST/getSumOfAllVisitorsForThePeriodFromDB">POST /getSumOfAllVisitorsForThePeriodFromDB</a></li><li><a href="global.html#POST/getTotalProfitForThePeriodFromDB">POST /getTotalProfitForThePeriodFromDB</a></li><li><a href="global.html#POST/postBuyTicket">POST /postBuyTicket</a></li><li><a href="global.html#POST/postReviewToDB">POST /postReviewToDB</a></li><li><a href="global.html#PeriodChanged">PeriodChanged</a></li><li><a href="global.html#ResetContainerForForms">ResetContainerForForms</a></li><li><a href="global.html#SelectSeat">SelectSeat</a></li><li><a href="global.html#addOptionsDays">addOptionsDays</a></li><li><a href="global.html#addOptionsSessions">addOptionsSessions</a></li><li><a href="global.html#addSeats">addSeats</a></li><li><a href="global.html#checkAdminAndUpdateMenu">checkAdminAndUpdateMenu</a></li><li><a href="global.html#closeModal">closeModal</a></li><li><a href="global.html#createButton">createButton</a></li><li><a href="global.html#curry">curry</a></li><li><a href="global.html#fetchAndDisplayFilms">fetchAndDisplayFilms</a></li><li><a href="global.html#getSessionsFromDB">getSessionsFromDB</a></li><li><a href="global.html#handleUserSession">handleUserSession</a></li><li><a href="global.html#loadFilmPosters">loadFilmPosters</a></li><li><a href="global.html#loadFilmRatings">loadFilmRatings</a></li><li><a href="global.html#openModal">openModal</a></li><li><a href="global.html#queryPromise">queryPromise</a></li><li><a href="global.html#showFilmDetails">showFilmDetails</a></li><li><a href="global.html#validateForm">validateForm</a></li><li><a href="global.html#validatePassword">validatePassword</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Mon Nov 11 2024 19:31:00 GMT+0200 (за східноєвропейським стандартним часом)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

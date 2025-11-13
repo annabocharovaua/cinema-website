@@ -1,6 +1,19 @@
 myStorage = window.localStorage;
 
-
+/**
+ * Creates a new HTML element with specified properties and appends it to a parent element.
+ * 
+ * @function CreateElement
+ * @param {string} nameElement - The type of the element to create (e.g., "div", "span", "p").
+ * @param {string} idElement - The id attribute for the new element.
+ * @param {string} innerText - The inner text content for the new element.
+ * @param {string} parentId - The id of the parent element to which the new element will be appended.
+ * @returns {HTMLElement} The created HTML element.
+ * @description 
+ * This function creates a new element with the provided tag name, id, inner text, and appends it
+ * to the specified parent element. If the parent element's id is "body", it appends to the body of the page.
+ * Otherwise, it appends to the element with the provided parent id.
+ */
 function CreateElement(nameElement, idElement, innerText, parentId) {
     let element = document.createElement(nameElement);
     element.id = idElement;
@@ -12,10 +25,30 @@ function CreateElement(nameElement, idElement, innerText, parentId) {
     return element;
 }
 
+/**
+ * Saves the film ID to local storage when a film is selected for viewing in more detail.
+ * 
+ * @function showFilmDetails
+ * @param {number} filmId - The ID of the selected film.
+ * @description 
+ * This function stores the provided film ID in the localStorage under the key "FILM_ID".
+ * This allows the selected film to be viewed in more detail on a different page.
+ */
 function showFilmDetails(filmId) {
      localStorage.setItem("FILM_ID", filmId);
- }
+}
 
+ /**
+ * Fetches the list of films from the server and dynamically creates HTML elements 
+ * to display the films in a catalog format.
+ * 
+ * @function fetchAndDisplayFilms
+ * @description 
+ * This function sends a GET request to fetch the list of films from the server. 
+ * It then parses the JSON response and dynamically creates HTML elements to display 
+ * each film's poster, name, director, genres, duration, and description in the "filmsCatalog" element.
+ * Each film will have a "Details" button that allows the user to view more information about the film.
+ */
 fetch('/getFilmsFromDB', {
     method: 'GET',
 })

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: pages/isAdmin.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: pages/isAdmin.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Fetches the user's role from the server to determine if they are an admin.
+ * If the user is an admin, it modifies the navigation menu to include links to the "Analytics" and "Admin Page".
+ * Depending on the current page, the relevant menu items are highlighted.
+ * 
+ * - If the user is on the "analytics.html" page, the "Analytics" link will be active and the "Admin Page" link will be added.
+ * - If the user is on the "admin-page.html" page, the "Admin Page" link will be active and the "Analytics" link will be added.
+ * - If the user is on any other page, both the "Analytics" and "Admin Page" links will be added to the menu.
+ *
+ * @function checkAdminAndUpdateMenu
+ * @returns {void} - Modifies the navigation menu based on the user's admin status and the current page.
+ */
+fetch (`/isAdmin`, {
+        method: 'GET',
+    })
+    .then(res => res.text())
+    .then(res => {
+        if(res != "0") {
+            if (new URL(window.location.href).pathname == "/analytics.html") {
+                document.getElementById("li-contacts_href").insertAdjacentHTML('afterend', '&lt;li class="active"> &lt;a href="analytics.html">Аналітика&lt;/a> &lt;/li>');
+                document.getElementById("li-contacts_href").insertAdjacentHTML('afterend', '&lt;li> &lt;a href="admin-page.html">Сторінка адміністратора&lt;/a> &lt;/li>');
+            } 
+            else if (new URL(window.location.href).pathname == "/admin-page.html") {
+                document.getElementById("li-contacts_href").insertAdjacentHTML('afterend', '&lt;li> &lt;a href="analytics.html">Аналітика&lt;/a> &lt;/li>');
+                document.getElementById("li-contacts_href").insertAdjacentHTML('afterend', '&lt;li class="active"> &lt;a href="admin-page.html">Сторінка адміністратора&lt;/a> &lt;/li>');
+            }
+            else {
+                document.getElementById("li-contacts_href").insertAdjacentHTML('afterend', '&lt;li> &lt;a href="analytics.html">Аналітика&lt;/a> &lt;/li>');
+                document.getElementById("li-contacts_href").insertAdjacentHTML('afterend', '&lt;li> &lt;a href="admin-page.html">Сторінка адміністратора&lt;/a> &lt;/li>');
+            }
+            
+        }
+        else return;
+    });</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#AddFieldGenre">AddFieldGenre</a></li><li><a href="global.html#AddNewFilm">AddNewFilm</a></li><li><a href="global.html#AddNewGenreToDB">AddNewGenreToDB</a></li><li><a href="global.html#AddNewSession">AddNewSession</a></li><li><a href="global.html#AddNewSessionToDB">AddNewSessionToDB</a></li><li><a href="global.html#BuyTicket">BuyTicket</a></li><li><a href="global.html#ChangedSelection">ChangedSelection</a></li><li><a href="global.html#CloseConnectionToDB">CloseConnectionToDB</a></li><li><a href="global.html#ConnectToDB">ConnectToDB</a></li><li><a href="global.html#CreateElement">CreateElement</a></li><li><a href="global.html#CreateElementInput">CreateElementInput</a></li><li><a href="global.html#CreateTable2">CreateTable2</a></li><li><a href="global.html#DeleteFieldGenre">DeleteFieldGenre</a></li><li><a href="global.html#DeleteFilm">DeleteFilm</a></li><li><a href="global.html#DeleteFilmFromDB">DeleteFilmFromDB</a></li><li><a href="global.html#DeleteGenre">DeleteGenre</a></li><li><a href="global.html#DeleteGenreFromDB">DeleteGenreFromDB</a></li><li><a href="global.html#DeleteSession">DeleteSession</a></li><li><a href="global.html#DeleteSessionFromDB">DeleteSessionFromDB</a></li><li><a href="global.html#FillInFilmsStatisticsTable">FillInFilmsStatisticsTable</a></li><li><a href="global.html#FillInTables">FillInTables</a></li><li><a href="global.html#GET/getDaysWithSessions/:filmId">GET /getDaysWithSessions/:filmId</a></li><li><a href="global.html#GET/getFilmDetails/:filmId">GET /getFilmDetails/:filmId</a></li><li><a href="global.html#GET/getFilmIdsFromDB">GET /getFilmIdsFromDB</a></li><li><a href="global.html#GET/getFilmNamesFromDB">GET /getFilmNamesFromDB</a></li><li><a href="global.html#GET/getFilmsFromDB">GET /getFilmsFromDB</a></li><li><a href="global.html#GET/getFilmsStatisticsFromDB">GET /getFilmsStatisticsFromDB</a></li><li><a href="global.html#GET/getFirstAndLastName">GET /getFirstAndLastName</a></li><li><a href="global.html#GET/getGenresFromDB">GET /getGenresFromDB</a></li><li><a href="global.html#GET/getPosterNewFilmsFromDB">GET /getPosterNewFilmsFromDB</a></li><li><a href="global.html#GET/getRatingAllFilmsFromDB">GET /getRatingAllFilmsFromDB</a></li><li><a href="global.html#GET/getRatingFilmsFromDB">GET /getRatingFilmsFromDB</a></li><li><a href="global.html#GET/getSeats/:filmId/:date/:time">GET /getSeats/:filmId/:date/:time</a></li><li><a href="global.html#GET/getSessions/:filmId/:date">GET /getSessions/:filmId/:date</a></li><li><a href="global.html#GET/getSumOfAllVisitorsFromDB">GET /getSumOfAllVisitorsFromDB</a></li><li><a href="global.html#GET/getTotalProfitFromDB">GET /getTotalProfitFromDB</a></li><li><a href="global.html#GET/getUsernameAndId">GET /getUsernameAndId</a></li><li><a href="global.html#GET/isAdmin">GET /isAdmin</a></li><li><a href="global.html#OnChangeDates">OnChangeDates</a></li><li><a href="global.html#OnChangeDates2">OnChangeDates2</a></li><li><a href="global.html#POST/AddNewFilmToDB">POST /AddNewFilmToDB</a></li><li><a href="global.html#POST/getFilmsStatisticsForThePeriodFromDB">POST /getFilmsStatisticsForThePeriodFromDB</a></li><li><a href="global.html#POST/getSumOfAllVisitorsForThePeriodFromDB">POST /getSumOfAllVisitorsForThePeriodFromDB</a></li><li><a href="global.html#POST/getTotalProfitForThePeriodFromDB">POST /getTotalProfitForThePeriodFromDB</a></li><li><a href="global.html#POST/postBuyTicket">POST /postBuyTicket</a></li><li><a href="global.html#POST/postReviewToDB">POST /postReviewToDB</a></li><li><a href="global.html#PeriodChanged">PeriodChanged</a></li><li><a href="global.html#ResetContainerForForms">ResetContainerForForms</a></li><li><a href="global.html#SelectSeat">SelectSeat</a></li><li><a href="global.html#addOptionsDays">addOptionsDays</a></li><li><a href="global.html#addOptionsSessions">addOptionsSessions</a></li><li><a href="global.html#addSeats">addSeats</a></li><li><a href="global.html#checkAdminAndUpdateMenu">checkAdminAndUpdateMenu</a></li><li><a href="global.html#closeModal">closeModal</a></li><li><a href="global.html#createButton">createButton</a></li><li><a href="global.html#curry">curry</a></li><li><a href="global.html#fetchAndDisplayFilms">fetchAndDisplayFilms</a></li><li><a href="global.html#getSessionsFromDB">getSessionsFromDB</a></li><li><a href="global.html#handleUserSession">handleUserSession</a></li><li><a href="global.html#loadFilmPosters">loadFilmPosters</a></li><li><a href="global.html#loadFilmRatings">loadFilmRatings</a></li><li><a href="global.html#openModal">openModal</a></li><li><a href="global.html#queryPromise">queryPromise</a></li><li><a href="global.html#showFilmDetails">showFilmDetails</a></li><li><a href="global.html#validateForm">validateForm</a></li><li><a href="global.html#validatePassword">validatePassword</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Mon Nov 11 2024 19:31:00 GMT+0200 (за східноєвропейським стандартним часом)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

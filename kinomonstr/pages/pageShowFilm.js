@@ -9,6 +9,14 @@ function CreateElement(nameElement, idElement, innerText, parentId) {
     return element;
 }
 
+/**
+ * Creates a radio button input element for a rating item and appends it to a specified container.
+ * The radio button is used for selecting a rating value for a film.
+ *
+ * @function CreateElementInput
+ * @param {number} id - The identifier for the rating option.
+ * @returns {void} - Creates and appends an input element of type "radio" to the DOM.
+ */
 function CreateElementInput(id) {
     CreateElement("input", "input-"+id, "", "rating__items-"+ filmId).classList.add("rating__item");
     document.getElementById("input-"+id).setAttribute('type', "radio");
@@ -16,6 +24,14 @@ function CreateElementInput(id) {
     document.getElementById("input-"+id).setAttribute('name', "rating");
 }
 
+/**
+ * Handles the ticket purchasing process.
+ * Verifies if a seat has been selected, retrieves the user's information, and sends a request to purchase the ticket.
+ * If the user is not logged in or no seat is selected, appropriate alerts are shown.
+ *
+ * @function BuyTicket
+ * @returns {void} - Initiates the ticket purchasing process and reloads the page upon success.
+ */
 function BuyTicket() {
     if (selected_seat == 0) {
         alert("Оберіть місце!"); 
@@ -44,11 +60,16 @@ function BuyTicket() {
         }
         else return;
     });
-
-
-
 }
 
+/**
+ * Selects a seat in the cinema hall and highlights it.
+ * This function updates the selected seat and changes its background color to indicate selection.
+ *
+ * @function SelectSeat
+ * @param {number} seat_number - The seat number to be selected.
+ * @returns {void} - Updates the selected seat's background color and highlights it.
+ */
 function SelectSeat(seat_number) {
     if (selected_seat != 0)
         document.getElementById("seat-" + selected_seat).style.backgroundColor = "#337ab7";
@@ -56,6 +77,16 @@ function SelectSeat(seat_number) {
     document.getElementById("seat-" + seat_number).style.backgroundColor = "#ccc";
 }
 
+/**
+ * Adds the available seats to the modal for a specific date and time for a film.
+ * This function fetches the available seats from the server for the given date and time,
+ * and generates buttons for available and unavailable seats accordingly.
+ *
+ * @function addSeats
+ * @param {string} [date=document.getElementById("form-day-select").value] - The selected date in YYYY-MM-DD format.
+ * @param {string} [time=document.getElementById("form-session-select").value] - The selected session time in HH:MM format.
+ * @returns {void} - Updates the modal with the available seats, marking the available ones with a button.
+ */
 function addSeats(date = document.getElementById("form-day-select").value, time = document.getElementById("form-session-select").value) {
     fetch(`/getSeats/${filmId}/${date}/${time}`, {
          method: 'GET',
@@ -78,6 +109,14 @@ function addSeats(date = document.getElementById("form-day-select").value, time 
         }); 
 }
 
+/**
+ * Adds available session options to the session select dropdown.
+ * This function fetches the available sessions from the server for a selected film and date,
+ * and populates the session select dropdown with the available session times.
+ *
+ * @function addOptionsSessions
+ * @returns {void} - Updates the session select dropdown with available session times.
+ */
 function addOptionsSessions() {
     fetch(`/getSessions/${filmId}/${document.getElementById("form-day-select").value}`, {
          method: 'GET',
@@ -94,6 +133,15 @@ function addOptionsSessions() {
         });
 }
 
+/**
+ * Adds available days with sessions to the day select dropdown.
+ * This function fetches the available days with sessions from the server for a specific film,
+ * and populates the day select dropdown. If no sessions are available, a message is displayed.
+ * If sessions are available, it also creates a session select dropdown and calls the function to populate available sessions.
+ *
+ * @function addOptionsDays
+ * @returns {void} - Updates the day select dropdown with available days. If days are available, it also adds a session select dropdown.
+ */
 function addOptionsDays() {
     fetch(`/getDaysWithSessions/${filmId}`, {
          method: 'GET',
@@ -209,12 +257,6 @@ fetch (`/getFilmDetails/${filmId}`, {
         CreateElement("span", "spanNameUser-" + i, " " + filmTable['film_reviews'][i]['first_name'] + ' ' + filmTable['film_reviews'][i]['last_name'] , "iReviewFilm-"+ i);
         CreateElement("div", "reviewText-" + i, filmTable['film_reviews'][i]['review_text'] , "panelCommentsFilm-"+ filmId).classList.add("panel-body","custom-mb-2"); 
     }
-
-    //fetch (`/БРАТЬ СЕАНСЫ И МЕСТА`, {
-    //    method: 'GET',
-    //});
-
-
 
     return fetch (`/getFirstAndLastName`, {
         method: 'GET',

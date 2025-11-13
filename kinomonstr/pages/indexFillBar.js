@@ -8,10 +8,31 @@ function CreateElement(nameElement, idElement, innerText, parentId) {
          document.getElementById(parentId).appendChild(element);
     return element;
 }
+
+/**
+ * Sets the selected film's ID in the local storage to be used on the details page.
+ * 
+ * @function showFilmDetails
+ * @param {number} filmId - The ID of the film whose details are to be displayed.
+ * @returns {void} - Stores the film ID in the local storage under the key "FILM_ID".
+ */
 function showFilmDetails(filmId) {
      localStorage.setItem("FILM_ID", filmId);
- }
+}
 
+ /**
+ * Fetches the latest film posters from the database, then dynamically creates and displays film posters
+ * on the webpage, categorizing them into two rows of posters. 
+ * Each film poster is clickable and will set the selected film's ID to local storage for display on the details page.
+ * 
+ * - Displays the first 4 films in a single row.
+ * - Displays additional films in a second row if there are more than 4 films.
+ * 
+ * The created film posters are linked to the "show.html" page and set the `showFilmDetails` function on click.
+ * 
+ * @function loadFilmPosters
+ * @returns {void} - Fetches the film posters, parses the response, and displays them in the DOM.
+ */
 fetch('/getPosterNewFilmsFromDB', {
     method: 'GET',
 })

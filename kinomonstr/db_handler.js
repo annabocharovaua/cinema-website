@@ -1,24 +1,25 @@
 var mysql = require('mysql');
 
 var config = {
-	host: "localhost",
+	host: '127.0.0.1',
 	user: "root",
 	database: "cinemadb",
 	password: "root",
-     port: 3307
+     port: 3306
 } 
 
 function ConnectToDB(config) {
     const connection = mysql.createConnection(config);
     connection.connect(function (err) {
          if (err) {
-              return console.error("Ошибка: " + err.message);
+              return console.error("Помилка: " + err.message);
          }
          else {
-              console.log("Подключение к серверу MySQL успешно установлено");
+              console.log("Підключення до сервера MySQL успішно встановлено");
          }
     });
     return connection;
 }
+
 var connection = ConnectToDB(config);
 module.exports = connection; 
