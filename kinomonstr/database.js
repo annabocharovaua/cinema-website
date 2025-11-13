@@ -438,7 +438,7 @@ app.get('/getSessions/:filmId/:date', (request, response) => {
     console.log("date:", date); 
     let result = {}
     const connection = ConnectToDB(config);  
-    let query = `SELECT DISTINCT TIME_FORMAT(start_time, '%H:%i:%s') AS start_time FROM sessions WHERE (film_id = ${filmId} AND ((current_date = '${date}' AND (start_date = '${date}' AND start_time > CURRENT_TIME)) OR (current_date != '${date}' AND start_date = '${date}'))) ORDER BY start_time;`;
+    let query = `SELECT DISTINCT TIME_FORMAT(start_time, '%H:%i:%s') AS start_time, ticket_price FROM sessions WHERE (film_id = ${filmId} AND ((current_date = '${date}' AND (start_date = '${date}' AND start_time > CURRENT_TIME)) OR (current_date != '${date}' AND start_date = '${date}'))) ORDER BY start_time;`;
     connection.query(query, (err, res, field) => {
         console.log("RES:", res);
         response.send(res);

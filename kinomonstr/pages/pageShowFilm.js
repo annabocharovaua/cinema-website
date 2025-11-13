@@ -148,9 +148,29 @@ function addOptionsSessions() {
             let sessionsTable = JSON.parse(res);
             for (let i = 0; i < sessionsTable.length; i++)
                 CreateElement("option", "form-session-option-" + i, sessionsTable[i]['start_time'], "form-session-select");
+
+            changePrice(sessionsTable[0]['ticket_price']);
             CreateElement("div", "modal-body-seats-BuyTicket", "", "modal-body-BuyTicket");
             addSeats();
+
+            document.getElementById("form-session-select").onchange = function () {
+                const selectedOption = this.options[this.selectedIndex];
+                const selectedId = selectedOption.id;
+                const index = selectedId.split("-").pop();
+                changePrice(sessionsTable[index]['ticket_price']);
+                addSeats();
+            };
         });
+}
+
+function changePrice(price){
+    if (!document.getElementById("form-ticket-price")) {
+        CreateElement("div", "form-ticket-price", "", "modal-body-BuyTicket").classList.add("form-group", "m-04");
+        CreateElement("label", "form-price-label", "Ціна квитка: ", "form-ticket-price").classList.add("form-label", "font-weight-bold");
+        CreateElement("span", "form-price-value", "", "form-ticket-price").classList.add("form-value", "ml-2");
+    }
+
+    document.getElementById("form-price-value").innerText = " " + price + " грн";
 }
 
 /**
@@ -177,9 +197,8 @@ function addOptionsDays() {
             if (daysTable.length > 0) {
                 CreateElement("label", "form-session-label", "Оберіть сеанс: ", "modal-body-BuyTicket").classList.add("form-label", "m-04");
                 CreateElement("select", "form-session-select", "", "modal-body-BuyTicket").classList.add("form-select", "m-04");
-                document.getElementById("form-session-select").setAttribute('onchange', "addSeats()");
                 console.log("document.getElementById().value", document.getElementById("form-day-select").value);
-                
+
                 addOptionsSessions();
             }
          });
