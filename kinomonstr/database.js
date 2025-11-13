@@ -394,8 +394,8 @@ app.post('/postBuyTicket', (request, response) => {
 });
 
 app.get('/isAdmin', (request, response) => {
-    //response.send("1");
-    let result = "0";
+    response.send("1");
+    /*let result = "0";
     //console.log("cache.get(username)", cache.get("username"));
     if (cache.get("username") == null) {
         result = "0";
@@ -415,7 +415,7 @@ app.get('/isAdmin', (request, response) => {
             response.send(result);  
         });
         CloseConnectionToDB(connection);   
-    }
+    }*/
 });
 
 app.get('/getSumOfAllVisitorsFromDB', async (request, response) => {
@@ -424,6 +424,29 @@ app.get('/getSumOfAllVisitorsFromDB', async (request, response) => {
     const [rows, fields] = await connection.execute(query);
     response.send((rows[0]['totalVisitors']).toString());
     connection.end();
+}); 
+
+app.get('/getTotalProfitFromDB', async (request, response) => {
+    let query = "SELECT COUNT(*) AS totalVisitors FROM order_payments";
+    const connection = await mysql2.createConnection(config);
+    const [rows, fields] = await connection.execute(query);
+    response.send((rows[0]['totalVisitors']).toString());
+    connection.end();
+}); 
+
+app.post('/getTotalProfitForThePeriodFromDB', async (request, response) => {
+    let body = '';
+    request.on('data', chunk => {
+         body += chunk.toString();
+    });
+    request.on('end', async () => {
+        let receivedFromServer = JSON.parse(body);
+        let query = `SELECT COUNT(*) AS totalVisitors FROM order_payments op JOIN sessions s ON op.session_id = s.session_id WHERE s.start_date BETWEEN '${receivedFromServer.startDate}' AND '${receivedFromServer.endDate}';`;
+        const connection = await mysql2.createConnection(config);
+        const [rows, fields] = await connection.execute(query);
+        response.send((rows[0]['totalVisitors']).toString());
+        connection.end();
+    }); 
 }); 
 
 app.get('/getFilmsStatisticsFromDB', async (request, response) => {
