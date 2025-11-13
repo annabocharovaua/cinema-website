@@ -13,12 +13,58 @@ function ResetContainerForForms() {
     document.getElementById("container-for-forms").innerHTML = "";
 }
 
+function AddFieldGenre(number) {
+    if (number != 1)
+        CreateElement("select", "genreName" + number, "", "container-for-genres").classList.add("custom-mt-3", "form-select");
+    else 
+        CreateElement("select", "genreName" + number, "", "container-for-genres").classList.add("form-select");
+
+    fetch(`/getGenresFromDB`, {
+        method: 'GET',
+   })
+    .then(res => res.text())
+    .then(res => {
+            let genreTable = JSON.parse(res);
+        if (genreTable.length == 0) 
+            CreateElement("option", "optionSelectGenre" + 0, "На жаль жанри відсутні, додайте новий!", "selectGenre");
+        for (let i = 0; i < genreTable.length; i++) {
+            if (!(genreTable[i]['name'] === deletedGenre))
+                CreateElement("option", "optionSelectGenre" + i, genreTable[i]['name'], "genreName"+ + number);
+        }
+    });
+}
+
+function DeleteFieldGenre(number) {
+    document.getElementById("genreName"+number).remove();
+}
+
+let number_of_genres = 1;
 function AddNewFilm() {
     CreateElement("form", "formAddFilm", "", "container-for-forms").classList.add("custom-mt-3");
     CreateElement("label", "lablefilmName", "Введіть назву фільму:", "formAddFilm").classList.add("form-label");
     CreateElement("input", "filmName", "", "formAddFilm").classList.add("form-control");
     document.getElementById("filmName").setAttribute('type', "text");
     document.getElementById("filmName").setAttribute('placeholder', "Назва фільму");
+
+    CreateElement("div", "container-for-genres", "", "formAddFilm");
+    CreateElement("label", "lablegenreName", "Введіть жанр:", "container-for-genres").classList.add("custom-mt-3", "form-label");
+
+    AddFieldGenre(1);
+    CreateElement("button", "buttonRemoveGenre" , "–", "formAddFilm").classList.add("btm", "btn-xs","btn-warning", "pull-right", "custom-ml-3");
+    document.getElementById("buttonRemoveGenre").setAttribute('type', "button");
+    document.getElementById("buttonRemoveGenre").onclick = function () {
+        if (number_of_genres > 1) {
+            DeleteFieldGenre(number_of_genres);
+            number_of_genres--;
+        }
+    }
+
+    CreateElement("button", "buttonAddGenre" , "+", "formAddFilm").classList.add("btm", "btn-xs","btn-warning", "pull-right");
+    document.getElementById("buttonAddGenre").setAttribute('type', "button");
+    document.getElementById("buttonAddGenre").onclick = function () {
+        number_of_genres++;
+        AddFieldGenre(number_of_genres);
+    }
 
     CreateElement("label", "lablefilmDirector", "Введіть режисера:", "formAddFilm").classList.add("custom-mt-3", "form-label");
     CreateElement("input", "filmDirector", "", "formAddFilm").classList.add("form-control");
@@ -61,13 +107,29 @@ function AddNewFilm() {
             return;
         }
 
+        let genres = "";
+        console.log("number_of_genres", number_of_genres);
+
+        for (let number = 1; number <= number_of_genres; number++) {
+            console.log("document.getElementById(", document.getElementById("genreName" + number).value);
+            if (number == number_of_genres)
+                genres += document.getElementById("genreName" + number).value;
+            else
+                genres += document.getElementById("genreName" + number).value + ',';
+        }
+        setTimeout(function() {
+            console.log('Пройшло 10 секунд');
+        }, 10000);
+        console.log("genres", genres);
+
         var userData = {
             filmName: document.getElementById("filmName").value,
             filmDirector: document.getElementById("filmDirector").value,
             filmDuration: document.getElementById("filmDuration").value,
             filmPoster: document.getElementById("filmPoster").value,
             filmTrailer: document.getElementById("filmTrailer").value,
-            filmDescription: document.getElementById("filmDescription").value
+            filmDescription: document.getElementById("filmDescription").value,
+            filmGenres: genres
         };
         var xhr = new XMLHttpRequest(); 
         xhr.open('POST', '/AddNewFilmToDB'); 
@@ -79,6 +141,7 @@ function AddNewFilm() {
         xhr.onload = function() {
           if (xhr.status === 200) {
                 alert(this.responseText); 
+                number_of_genres = 1;
           }
           else if (xhr.status === 409) {
             alert(this.responseText);

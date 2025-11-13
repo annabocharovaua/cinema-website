@@ -534,15 +534,98 @@ app.get('/getGenresFromDB', async (request, response) => {
     connection.end();
 });
 
-app.post('/AddNewFilmToDB', async (request, response, next) =>  { 
+app.post('/AddNewFilmToDB', async (request, response, next) => { 
+    try {
+        var receivedFromServer = {
+            filmName: request.body.filmName,
+            filmDirector: request.body.filmDirector,
+            filmDuration: request.body.filmDuration,
+            filmDescription: request.body.filmDescription,
+            filmPoster: request.body.filmPoster,
+            filmTrailer: request.body.filmTrailer,
+            filmGenres: request.body.filmGenres
+        }; 
+        //console.log(receivedFromServer);
+
+        let query = `INSERT INTO films (name, director, duration, description, poster, trailer)
+        VALUES (
+            '${receivedFromServer.filmName}',
+            '${receivedFromServer.filmDirector}',
+            '${receivedFromServer.filmDuration}',
+            '${receivedFromServer.filmDescription}',
+            '${receivedFromServer.filmPoster}',
+            '${receivedFromServer.filmTrailer}');`;
+
+        const connection = ConnectToDB(config);  
+        
+        connection.query(query, async (err, result, field) => {
+            if (err) {
+                console.error("Error in main query:", err);
+                response.status(500).send('Internal Server Error'); 
+                CloseConnectionToDB(connection);
+                return;
+            }
+
+            //console.log("newFilmId: ", result.insertId);
+
+            let genresArray = receivedFromServer.filmGenres.split(',');
+            //console.log("genresArray", genresArray);
+
+            for (let genre of genresArray) {
+                let query2 = `SELECT genre_id FROM genres WHERE name = '${genre}'`;
+            
+                try {
+                    let res = await queryPromise(connection, query2);
+                    let genreId = res[0]['genre_id'];
+            
+                    // Перевірка наявності запису перед вставкою
+                    let query3Check = `SELECT * FROM film_genres WHERE film_id = '${result.insertId}' AND genre_id = '${genreId}'`;
+                    let existingRecord = await queryPromise(connection, query3Check);
+            
+                    if (existingRecord.length === 0) {
+                        let query3 = `INSERT INTO film_genres (film_id, genre_id) VALUES ('${result.insertId}', '${genreId}');`;
+                        await queryPromise(connection, query3);
+                    }
+                } catch (error) {
+                    console.error("Error in genre query:", error);
+                    response.status(409).send('Error while adding film!');
+                    CloseConnectionToDB(connection);
+                    return;
+                }
+            }
+
+            response.status(200).send('Film successfully added!');
+            CloseConnectionToDB(connection);
+        });
+    } catch (error) {
+        console.error("Unexpected error:", error);
+        response.status(500).send('Internal Server Error');
+    }
+});
+
+function queryPromise(connection, sql) {
+    return new Promise((resolve, reject) => {
+        connection.query(sql, (err, result, fields) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(result);
+            }
+        });
+    });
+}
+
+/*app.post('/AddNewFilmToDB', async (request, response, next) =>  { 
     var receivedFromServer = {
         filmName: request.body.filmName,
         filmDirector: request.body.filmDirector,
         filmDuration: request.body.filmDuration,
         filmDescription: request.body.filmDescription,
         filmPoster: request.body.filmPoster,
-        filmTrailer: request.body.filmTrailer
+        filmTrailer: request.body.filmTrailer,
+        filmGenres: request.body.filmGenres
     }; 
+    console.log(receivedFromServer);
     let query = `INSERT INTO films (name, director, duration, description, poster, trailer)
     VALUES (
         '${receivedFromServer.filmName}',
@@ -555,6 +638,22 @@ app.post('/AddNewFilmToDB', async (request, response, next) =>  {
     const connection = ConnectToDB(config);  
     connection.query(query, (err, result, field) => {
         console.log("ERR", err);
+        console.log("newFilmId: ", result.insertId);
+
+        let genresArray = receivedFromServer.filmGenres.split(',');
+        console.log("genresArray", genresArray);
+
+        for (let genre of genresArray) {
+            let query2 = `SELECT genre_id FROM genres WHERE name = '${genre}'`;
+
+            connection.query(query2, (err, res, field) => {
+                console.log("ERR", err);
+                let query3 = `INSERT INTO film_genres (film_id, genre_id) VALUES ('${result.insertId}', '${res[0]['genre_id']}');`;
+                connection.query(query3, (err, res2, field) => {
+                    console.log("ERR", err);
+                });
+            });
+        }
         if (!err) {
             //console.log(query);
             response.status(200).send('Film successfully added!'); 
@@ -564,7 +663,7 @@ app.post('/AddNewFilmToDB', async (request, response, next) =>  {
         } 
     });		
     CloseConnectionToDB(connection);
-});
+});*/
 
 app.post('/AddNewSessionToDB', async (request, response, next) =>  { 
 
