@@ -51,6 +51,7 @@ function BuyTicket() {
                 body: JSON.stringify({
                     "user_id": user['user_id'],
                     "seat_number": selected_seat,
+                    "row_num": selected_row,
                     "film_id": filmId,
                     "date": document.getElementById("form-day-select").value,
                     "time": document.getElementById("form-session-select").value,
@@ -68,13 +69,16 @@ function BuyTicket() {
  *
  * @function SelectSeat
  * @param {number} seat_number - The seat number to be selected.
+ * @param {number} row_num - The seat number to be selected.
  * @returns {void} - Updates the selected seat's background color and highlights it.
  */
-function SelectSeat(seat_number) {
-    if (selected_seat != 0)
-        document.getElementById("seat-" + selected_seat).style.backgroundColor = "#337ab7";
+function SelectSeat(seat_number, row_num) {
+    if (selected_seat != 0) {
+        document.getElementById(`seat-${selected_row}-${selected_seat}`).style.backgroundColor = "#337ab7";
+    }
     selected_seat = seat_number;
-    document.getElementById("seat-" + seat_number).style.backgroundColor = "#ccc";
+    selected_row = row_num;
+    document.getElementById(`seat-${row_num}-${seat_number}`).style.backgroundColor = "#ccc";
 }
 
 /**
@@ -89,24 +93,40 @@ function SelectSeat(seat_number) {
  */
 function addSeats(date = document.getElementById("form-day-select").value, time = document.getElementById("form-session-select").value) {
     fetch(`/getSeats/${filmId}/${date}/${time}`, {
-         method: 'GET',
+        method: 'GET',
     })
-         .then(res => res.text())
-         .then(res => {
-            let seatsTable = JSON.parse(res);
-            console.log(seatsTable);
-            document.getElementById("modal-body-seats-BuyTicket").innerHTML = "";
-            selected_seat = 0;
-            CreateElement("span", "row-num-1", "1 ряд", "modal-body-seats-BuyTicket").classList.add("m-04");
-            for (let i = 0; i < seatsTable.length; i++)
-                if (seatsTable[i]['row_num'] == 1)
-                    if (seatsTable[i]['is_available']) {
-                        CreateElement("button", "seat-" + seatsTable[i]['seat_number'], seatsTable[i]['seat_number'], "modal-body-seats-BuyTicket").classList.add("m-04", "btn", "btn-primary");
-                        document.getElementById("seat-" + seatsTable[i]['seat_number']).setAttribute("onclick", "SelectSeat(" + seatsTable[i]['seat_number'] + ")");
+    .then(res => res.text())
+    .then(res => {
+        let seatsTable = JSON.parse(res);
+        console.log(seatsTable);
+        document.getElementById("modal-body-seats-BuyTicket").innerHTML = "";
+        selected_seat = 0;
+        selected_row = 0;
+        const maxRows = 5;
+
+        for (let row = 1; row <= maxRows; row++) {
+            let rowSeats = seatsTable.filter(seat => seat.row_num === row);
+            let hasAvailableSeats = rowSeats.some(seat => seat.is_available);
+
+            if (hasAvailableSeats) {
+                CreateElement("span", `row-num-${row}`, `${row} ряд`, "modal-body-seats-BuyTicket").classList.add("m-04");
+
+                rowSeats.forEach(seat => {
+                    const seatId = `seat-${row}-${seat.seat_number}`;
+                    if (seat.is_available) {
+                        CreateElement("button", seatId, seat.seat_number, "modal-body-seats-BuyTicket")
+                            .classList.add("m-04", "btn", "btn-primary");
+                        document.getElementById(seatId).setAttribute("onclick", `SelectSeat(${seat.seat_number}, ${row})`);
+                    } else {
+                        CreateElement("button", seatId, seat.seat_number, "modal-body-seats-BuyTicket")
+                            .classList.add("m-04", "btn", "btn-secondary", "disabled");
                     }
-                    else 
-                        CreateElement("button", "seat-" + seatsTable[i]['seat_number'], seatsTable[i]['seat_number'], "modal-body-seats-BuyTicket").classList.add("m-04", "btn", "btn-secondary", "disabled");
-        }); 
+                });
+
+                CreateElement("div", `separator-row-${row}`, "", "modal-body-seats-BuyTicket").classList.add("row-separator");
+            }
+        }
+    });
 }
 
 /**
@@ -170,6 +190,7 @@ var filmId = localStorage.getItem("FILM_ID");
 var rating = 10;
 let user_grade = 10;
 let selected_seat = 0;
+let selected_row = 0;
 
 console.log("filmId", filmId);
 fetch (`/getFilmDetails/${filmId}`, {

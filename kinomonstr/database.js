@@ -504,7 +504,7 @@ app.post('/postBuyTicket', (request, response) => {
         const [rows, fields] = await connection.execute(query);
         session_id = rows[0]['session_id'];
         
-        let query2 = `SELECT seat_id FROM seats WHERE session_id = ${session_id} AND seat_number = ${receivedFromServer.seat_number};`;
+        let query2 = `SELECT seat_id FROM seats WHERE session_id = ${session_id} AND seat_number = ${receivedFromServer.seat_number} AND row_num = ${receivedFromServer.row_num};`;
         const [rows2, fields2] = await connection.execute(query2);
         seat_id = rows2[0]['seat_id'];
 
