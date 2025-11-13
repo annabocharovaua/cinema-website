@@ -289,74 +289,82 @@ fetch (`/getFilmDetails/${filmId}`, {
     if(res2 != 0) {
 
     let user = JSON.parse(res2);
-    CreateElement("form", "formReview-" + filmId, "", "panelCommentsFilm-"+ filmId).classList.add("custom-mt-3");
-    CreateElement("h1", "newComment-" + filmId, "Залиште відгук!", "formReview-"+ filmId).classList.add("mt-2");
-    CreateElement("div", "newFeedback-" + filmId, "", "formReview-"+ filmId).classList.add("feedback");
-    CreateElement("div", "rating-" + filmId, "", "newFeedback-"+ filmId).classList.add("rating", "rating_set");
-    CreateElement("div", "rating__body-" + filmId, "", "rating-"+ filmId).classList.add("rating__body");
-    CreateElement("div", "rating__active-" + filmId, "", "rating__body-"+ filmId).classList.add("rating__active");
-    CreateElement("div", "rating__items-" + filmId, "", "rating__body-"+ filmId).classList.add("rating__items");
-    CreateElementInput(1);
-    CreateElementInput(2);
-    CreateElementInput(3);
-    CreateElementInput(4);
-    CreateElementInput(5);
-    CreateElementInput(6);
-    CreateElementInput(7);
-    CreateElementInput(8);
-    CreateElementInput(9);
-    CreateElementInput(10);
 
-    CreateElement("p", "rating__header-" + filmId, "Оцінка фільму: ", "rating-"+ filmId).classList.add("rating__header");
-    CreateElement("p", "rating__value-" + filmId, rating, "rating-"+ filmId).classList.add("rating__value");
-    user_grade = rating;
-    CreateElement("div", "newUserNameReview-" + filmId, "", "formReview-"+ filmId).classList.add("form-group");
-    CreateElement("input", "inputNameReview-" + filmId, "", "newUserNameReview-"+ filmId).classList.add("form-control", "input-lg");
-    document.getElementById("inputNameReview-" + filmId).setAttribute('type', "text");
-
-    
-    document.getElementById("inputNameReview-" + filmId).setAttribute('placeholder', user['first_name'] + " " + user['last_name']);
-    document.getElementById("inputNameReview-" + filmId).setAttribute('disabled', 'disabled');
-
-    CreateElement("div", "newReviewArea-" + filmId, "", "formReview-"+ filmId).classList.add("form-group");
-    CreateElement("textarea", "textareaReview-" + filmId, "", "newReviewArea-"+ filmId).classList.add("form-control");
-    CreateElement("button", "buttonSendReview-" + filmId, "Відправити", "formReview-"+ filmId).classList.add("btm", "btn-lg","btn-warning", "pull-right");
-
-    CreateElement("div", "marginCommentsFilm-" + filmId, "", "commentsFilm-" + filmId).classList.add("margin-8"); 
-
-    document.getElementById("buttonSendReview-" + filmId).onclick = function () {
-          var userData = {
-              film_id: filmId,
-              user_id: user['user_id'],
-              grade: user_grade, 
-              comment: document.getElementById("textareaReview-" + filmId).value
-          };
-          var xhr = new XMLHttpRequest(); 
-          xhr.open('POST', '/postReviewToDB'); 
-           
-
-          xhr.setRequestHeader('Content-Type', 'application/json'); 
-          xhr.send(JSON.stringify(userData)); 
-
-          xhr.onload = function() {
-            if (xhr.status === 200) {
-                  alert(this.responseText); 
-                  location.reload();
-            }
-            else if (xhr.status === 409) {
-                alert('user not found!');
-            }
-            else if (xhr.status === 404) {
-                alert('wrong password!');
-            }
-          }; 
-
-          xhr.onerror = function() {
-              alert('server error!'); 
-          }
-
-      }
-
+    return fetch (`/getOrderPaymentsForUserAndFilm?user_id=${user['user_id']}&film_id=${filmId}`, {
+        method: 'GET',
+    })
+    .then(res3 => res3.text())
+    .then(res3 => {
+        if (res3 != 0) {
+            CreateElement("form", "formReview-" + filmId, "", "panelCommentsFilm-"+ filmId).classList.add("custom-mt-3");
+            CreateElement("h1", "newComment-" + filmId, "Залиште відгук!", "formReview-"+ filmId).classList.add("mt-2");
+            CreateElement("div", "newFeedback-" + filmId, "", "formReview-"+ filmId).classList.add("feedback");
+            CreateElement("div", "rating-" + filmId, "", "newFeedback-"+ filmId).classList.add("rating", "rating_set");
+            CreateElement("div", "rating__body-" + filmId, "", "rating-"+ filmId).classList.add("rating__body");
+            CreateElement("div", "rating__active-" + filmId, "", "rating__body-"+ filmId).classList.add("rating__active");
+            CreateElement("div", "rating__items-" + filmId, "", "rating__body-"+ filmId).classList.add("rating__items");
+            CreateElementInput(1);
+            CreateElementInput(2);
+            CreateElementInput(3);
+            CreateElementInput(4);
+            CreateElementInput(5);
+            CreateElementInput(6);
+            CreateElementInput(7);
+            CreateElementInput(8);
+            CreateElementInput(9);
+            CreateElementInput(10);
+        
+            CreateElement("p", "rating__header-" + filmId, "Оцінка фільму: ", "rating-"+ filmId).classList.add("rating__header");
+            CreateElement("p", "rating__value-" + filmId, rating, "rating-"+ filmId).classList.add("rating__value");
+            user_grade = rating;
+            CreateElement("div", "newUserNameReview-" + filmId, "", "formReview-"+ filmId).classList.add("form-group");
+            CreateElement("input", "inputNameReview-" + filmId, "", "newUserNameReview-"+ filmId).classList.add("form-control", "input-lg");
+            document.getElementById("inputNameReview-" + filmId).setAttribute('type', "text");
+        
+            
+            document.getElementById("inputNameReview-" + filmId).setAttribute('placeholder', user['first_name'] + " " + user['last_name']);
+            document.getElementById("inputNameReview-" + filmId).setAttribute('disabled', 'disabled');
+        
+            CreateElement("div", "newReviewArea-" + filmId, "", "formReview-"+ filmId).classList.add("form-group");
+            CreateElement("textarea", "textareaReview-" + filmId, "", "newReviewArea-"+ filmId).classList.add("form-control");
+            CreateElement("button", "buttonSendReview-" + filmId, "Відправити", "formReview-"+ filmId).classList.add("btm", "btn-lg","btn-warning", "pull-right");
+        
+            CreateElement("div", "marginCommentsFilm-" + filmId, "", "commentsFilm-" + filmId).classList.add("margin-8"); 
+        
+            document.getElementById("buttonSendReview-" + filmId).onclick = function () {
+                  var userData = {
+                      film_id: filmId,
+                      user_id: user['user_id'],
+                      grade: user_grade, 
+                      comment: document.getElementById("textareaReview-" + filmId).value
+                  };
+                  var xhr = new XMLHttpRequest(); 
+                  xhr.open('POST', '/postReviewToDB'); 
+                   
+        
+                  xhr.setRequestHeader('Content-Type', 'application/json'); 
+                  xhr.send(JSON.stringify(userData)); 
+        
+                  xhr.onload = function() {
+                    if (xhr.status === 200) {
+                          alert(this.responseText); 
+                          location.reload();
+                    }
+                    else if (xhr.status === 409) {
+                        alert('user not found!');
+                    }
+                    else if (xhr.status === 404) {
+                        alert('wrong password!');
+                    }
+                  }; 
+        
+                  xhr.onerror = function() {
+                      alert('server error!'); 
+                  }
+        
+              }
+        }
+    })
 }
 }).then(res2 => {
     if(res2 != 0) {

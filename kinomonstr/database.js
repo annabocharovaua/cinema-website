@@ -1065,6 +1065,46 @@ app.post('/DeleteSessionFromDB', async (request, response, next) =>  {
     });		
 });
 
+/**
+ * Retrieves order payment information for a specific user and film, if sessions exist for the given film.
+ * The results are formatted into a JSON object with order details.
+ *
+ * @function getOrderPaymentsForUserAndFilm
+ * @param {number} user_id - The ID of the user.
+ * @param {number} film_id - The ID of the film.
+ * @returns {void} - Sends a response containing order payment data in JSON format.
+ */
+app.get('/getOrderPaymentsForUserAndFilm', async (request, response, next) => {
+    let result = "0";
+
+    const { user_id, film_id } = request.query;
+    if (!user_id || !film_id) {
+        return response.status(400).send({ error: 'user_id and film_id are required' });
+    }
+
+    const connection = ConnectToDB(config);
+
+    let query = `
+        SELECT * 
+        FROM cinemadb.order_payments op
+        WHERE op.user_id = ? 
+        AND EXISTS (
+            SELECT 1
+            FROM cinemadb.sessions s
+            WHERE s.film_id = ? AND s.session_id = op.session_id
+        );
+    `;
+
+    connection.query(query, [user_id, film_id], (err, result, field) => {
+        if (result.length > 0) {
+            response.send(result);
+        } else {
+            result = "0";        
+        }
+        CloseConnectionToDB(connection);
+    });
+});
+
 module.exports = app;
 
 /**
